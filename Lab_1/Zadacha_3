@@ -1,0 +1,14 @@
+using System;
+
+public class HelloWorld
+{
+    public static void Main(string[] args)
+    {
+        int length,width,start,n;
+        length = Convert.ToInt32(Console.ReadLine());
+        width = Convert.ToInt32(Console.ReadLine());
+        start = Convert.ToInt32(Console.ReadLine());
+        n = Convert.ToInt32(Console.ReadLine());
+        Console.WriteLine((start*n*2) + (width*n*2) + ((1+n)*n * length));
+    }
+}
