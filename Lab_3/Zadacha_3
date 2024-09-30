@@ -11,14 +11,16 @@ public class Test
 		
 		int c = 0; // Счётчик
 		int result = -2147483647; //Результат
-		
+		bool found = false;
 		for (int i = 0; i < count; i++){
 		    int input = Convert.ToInt32(Console.ReadLine());
 		    
 		    if (Math.Abs(input)%2 == 0){
 		        c = c + input;
+                        found = true;
 		    }else{
-		        if(c>result && c!= 0)result=c;
+		        if(c>result && found)result=c;
+		        found = false;
 		        c=0;
 		    }
 		}
