@@ -10,19 +10,19 @@ public class Test
 		int count = Convert.ToInt32(Console.ReadLine()); //Кол-во цифр
 		
 		int c = 0; // Счётчик
-		int result = 0; //Результат
+		int result = -2147483647; //Результат
 		
 		for (int i = 0; i < count; i++){
 		    int input = Convert.ToInt32(Console.ReadLine());
 		    
 		    if (Math.Abs(input)%2 == 0){
 		        c = c + input;
-		        if(c>result)result=c;
 		    }else{
+		        if(c>result && c!= 0)result=c;
 		        c=0;
 		    }
 		}
-		
+		if(c>result && c!= 0)result=c;
 		Console.WriteLine(result);
 	}
 }
