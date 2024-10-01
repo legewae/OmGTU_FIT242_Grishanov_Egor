@@ -6,8 +6,8 @@ public class Program
 	{
 		int N = Convert.ToInt32(Console.ReadLine());
 		
-		int max = -2147483648;
-		int secondMax = -2147483648;
+		int max = Int32.MinValue;
+		int secondMax = Int32.MinValue;
 		for(int i = 0; i < N; i++){
 			int input = Convert.ToInt32(Console.ReadLine());
 		    if(input > max){
