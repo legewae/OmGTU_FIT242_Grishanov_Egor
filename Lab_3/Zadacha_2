@@ -10,7 +10,7 @@ public class Test
 		int count = Convert.ToInt32(Console.ReadLine()); //Кол-во цифр
 		
 		int c = 0; // Счётчик
-		int result = 2147483647; //Результат
+		int result = Int32.MaxValue; //Результат
 		
 		for(int i = 0;i<count;i++){
 		    int input = Convert.ToInt32(Console.ReadLine());
@@ -24,7 +24,7 @@ public class Test
 		}
 		if(c<result && c > 0) result=c; // После цикла ещё раз запоминаем т.к. последовательность нулей могла быть в конце
 		
-		if(result == 2147483647) result = 0; //Если нет нулей в массиве, результат не мог измениться
+		if(result == Int32.MaxValue) result = 0; //Если нет нулей в массиве, результат не мог измениться
 		
 		Console.WriteLine(result);
 	}
