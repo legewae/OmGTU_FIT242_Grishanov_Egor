@@ -11,7 +11,7 @@ public class Test
 		int input = Convert.ToInt32(Console.ReadLine());
 		
 		if(input<=0){
-		    Console.WriteLine("Не подходящее число");
+		    Console.WriteLine("Не подходящее число, выход из цикла");
 		    break;
 		}
 		int len = -1; //Предполагаем, что чётных чисел нет
