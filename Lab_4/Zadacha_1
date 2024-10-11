@@ -1,0 +1,41 @@
+using System;
+
+
+public class Test
+{
+	public static void Main()
+	{
+	while (true){
+		int result = 0;
+		int count = 0;
+		int input = Convert.ToInt32(Console.ReadLine());
+		
+		if(input<=0){
+		    Console.WriteLine("Не подходящее число");
+		    break;
+		}
+		int len = -1; //Предполагаем, что чётных чисел нет
+		int temp = input;
+		while (temp > 0){
+	    if(temp%2==0) len++;
+		   temp = (int)(temp/10);
+		 }
+		while(input>0){
+		  
+		    int lastDigit = input%10;
+	    	input = (input - lastDigit)/10;
+	    	if (lastDigit%2==1)continue;
+		        
+		    result = result + lastDigit*(int)Math.Pow(10,len-count);
+		    count++;
+		 }
+	    if(result == 0 ){
+	        if(len>=0) {Console.WriteLine(0);}
+	        else Console.WriteLine("Не было чётных элементов");
+	    }else{
+	       Console.WriteLine(result);
+	    }
+	    }
+	}
+}
+
