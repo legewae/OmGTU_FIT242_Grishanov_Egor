@@ -1,0 +1,69 @@
+using System;
+
+public class Test
+{
+    public static int[] FillArray(int[] array){
+        for(int i = 0; i<array.Length; i++){
+            array[i] = Convert.ToInt32(Console.ReadLine());
+        }
+        return array;
+    }
+    
+    public static int SumOfElementsBy3(int[] array){
+        int sum = 0;
+        for(int i = 0; i<array.Length; i++){
+            if(Math.Abs(array[i])%3==0) sum += array[i];
+        }
+        return sum;
+    }
+    
+    public static int MultiplyOddElements(int[] array){
+        int res = 1;
+        bool found = false;
+        for(int i = 0; i<array.Length; i++){
+            if(Math.Abs(array[i])%2==1){
+                res *= array[i];
+                found = true;
+            }
+        }
+        if(res==1&&found==false) return 0;
+        return res;
+    }
+    
+    public static int ZerosInArray(int[] array){
+        int res = 0;
+        for(int i = 0; i<array.Length; i++){
+            if(array[i]==0){
+                res++;
+            }
+        }
+        return res;
+    }
+    
+	public static void Main()
+	{
+		int n = Convert.ToInt32(Console.ReadLine());
+		int m = Convert.ToInt32(Console.ReadLine());
+		int p = Convert.ToInt32(Console.ReadLine());
+		
+		int[] a1 = new int[n];
+		int[] a2 = new int[m];
+		int[] a3 = new int[p];
+		
+		a1 = FillArray(a1);
+		a2 = FillArray(a2);
+		a3 = FillArray(a3);
+		
+		Console.WriteLine("Сумма элементов кратных 3 в 1 массиве: "+SumOfElementsBy3(a1));
+	    Console.WriteLine("Сумма элементов кратных 3 в 2 массиве: "+SumOfElementsBy3(a2));
+	    Console.WriteLine("Сумма элементов кратных 3 в 3 массиве: "+SumOfElementsBy3(a3));
+	    
+	    Console.WriteLine("Произведение нечётных элементов в 1 массиве: "+MultiplyOddElements(a1));
+	    Console.WriteLine("Произведение нечётных элементов в 2 массиве: "+MultiplyOddElements(a2));
+	    Console.WriteLine("Произведение нечётных элементов в 3 массиве: "+MultiplyOddElements(a3));
+	    
+	    Console.WriteLine("Нулей в 1 массиве: "+ZerosInArray(a1));
+	    Console.WriteLine("Нулей в 2 массиве: "+ZerosInArray(a2));
+	    Console.WriteLine("Нулей в 3 массиве: "+ZerosInArray(a3));
+	}
+}
