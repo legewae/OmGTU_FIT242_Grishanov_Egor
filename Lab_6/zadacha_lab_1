@@ -1,0 +1,45 @@
+
+using System;
+
+public class Test
+{
+    public static void Main(){
+        int n = Convert.ToInt32(Console.ReadLine());
+        int m = Convert.ToInt32(Console.ReadLine());
+        int[,] array = new int[n,m];
+        for(int i = 0; i<n; i++){
+            for(int b = 0; b<m;b++){
+                array[i,b] = Convert.ToInt32(Console.ReadLine());
+            }
+        }
+        
+        //Максимальную с минимальной строкой
+        int minstr = 0;
+        int maxstr = 0;
+        int max = array[0,0];
+        int min = array[0,0];
+         for(int i = 0; i<n; i++){
+            for(int b = 0; b<m;b++){
+                if (array[i,b] <min){
+                    min = array[i,b];
+                    minstr = i;
+                } 
+                if (array[i,b]>max){
+                    max = array[i,b];
+                    maxstr = i;
+                } 
+            }
+        }
+        for(int i = 0; i<m; i++){
+            int temp = array[maxstr,i];
+            array[maxstr,i] = array[minstr,i];
+            array[minstr,i] = temp;
+        }
+        for(int i = 0; i<n; i++){
+            for(int b = 0; b<m;b++){
+                Console.Write($"{array[i,b]} "); //Вывод
+            }
+            Console.WriteLine("");
+        }
+    }
+}
