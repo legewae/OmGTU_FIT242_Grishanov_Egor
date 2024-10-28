@@ -1,0 +1,39 @@
+//Массив трёх массивов
+//Каждый массив - своя размерность
+//Определить:
+//1) Количество нечётных элементов в каждой строке ступенчатого массива, оформить с помощью функции
+using System;
+
+public class Test
+{
+    public static int[] fill(int[] stroka){
+        for(int i = 0; i<stroka.Length;i++){
+            stroka[i] = Convert.ToInt32(Console.ReadLine());
+        }
+        return stroka;
+    }
+    
+    public static int countOdd(int[] stroka){
+        int c = 0;
+        for(int i = 0; i<stroka.Length;i++){
+            if (Math.Abs(stroka[i])%2 == 1) c++;
+        } 
+        return c;
+    }
+    
+	public static void Main()
+	{
+		int[][] array = new int[3][];
+		array[0] = new int[Convert.ToInt32(Console.ReadLine())];
+		array[1] = new int[Convert.ToInt32(Console.ReadLine())];
+		array[2] = new int[Convert.ToInt32(Console.ReadLine())];
+		
+		array[0] = fill(array[0]);
+		array[1] = fill(array[1]);
+		array[2] = fill(array[2]);
+		
+		for(int i = 0; i<3;i++){
+		    Console.WriteLine($"Нечётных в {i} массиве: {countOdd(array[i])}");
+		}
+	}
+}
