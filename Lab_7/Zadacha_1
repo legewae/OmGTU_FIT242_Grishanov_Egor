@@ -1,0 +1,40 @@
+//Имеем ступенчатый массив(массив, каждая строка которого может иметь свою длину)
+//Сначала подается кол-во строк, потом для каждой строки подается сначала длина этой строки, а потом её элементы
+//Гарантируется, что нет строки с длиной 1
+
+//Найти номера строк, в которых элементы равномерно убывают(Убывают на одну константу?)
+
+using System;
+
+public class Test
+{
+    public static int[][] fillArray(int[][] array){
+        for(int i = 0;i < array.Length;i++){
+            array[i] = new int[Convert.ToInt32(Console.ReadLine())];
+            for(int j = 0; j < array[i].Length; j++){
+                array[i][j] = Convert.ToInt32(Console.ReadLine());
+            }
+        }
+        return array;
+    }
+	public static void Main()
+	{
+	    int n = Convert.ToInt32(Console.ReadLine());
+	    int[][] array = new int[n][];
+		array = fillArray(array);
+
+		for (int i = 0; i<n;i++){
+		    int check = Math.Abs(array[i][0] - array[i][1]);//Если разность положительная, то элементы не убывают
+		                                                    //Проверка в цикле исключит данную строку
+		    bool flag = true;
+		    for(int j = 1; j < array[i].Length;j++){
+		        if((array[i][j-1] - array[i][j]) != check){
+		           flag = false;
+		           break;
+		        }
+		    }
+		    if(flag==true) Console.WriteLine(i);
+		}
+	}
+}
+
