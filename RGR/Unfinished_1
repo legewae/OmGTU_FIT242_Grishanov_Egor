@@ -1,0 +1,62 @@
+using System;
+using System.Collections;
+
+public class Test
+{
+    public static string getInteraction(string interaction){
+        switch(interaction){
+            case "WATER": return "WT";
+            case "DUST": return "DT";
+            case "FIRE": return "FR";
+            case "MIX": return "MX";
+        }
+        return "";
+    }
+	public static void Main()
+	{
+	    string[,] moves = new string[100,3];
+	    moves[0,0] = "DUST";
+	    moves[0,1] = "root";
+	    moves[0,2] = "teeth";
+	    
+	    moves[1,0] = "WATER";
+	    moves[1,1] = "1";
+	    moves[1,2] = "tear";
+	    
+	    moves[2,0] = "FIRE";
+	    moves[2,1] = "2";
+	    moves[2,2] = "balls";
+	    
+	    moves[3,0] = "MIX";
+	    moves[3,1] = "Kartoshka";
+	    moves[3,1] = "mandaroshka";
+	
+	    string[] ingredientList = new string[100]; 
+	    
+		string result = "";
+		
+		for(int i = 0; i < 4; i++){
+		    string interaction = moves[i,0];
+		    string firstIngredient = moves[i,1];
+		    string secondIngredient = moves[i,2];
+		    if(int.TryParse(firstIngredient, out _)){
+		        int temp = Convert.ToInt32(firstIngredient)-1;
+		        firstIngredient = ingredientList[temp];
+		        ingredientList[temp] = "";
+		    }
+
+		    if(int.TryParse(secondIngredient,out _)){
+		        int temp = Convert.ToInt32(secondIngredient)-1;
+		        secondIngredient = ingredientList[temp];
+		        ingredientList[temp] = "";
+		    }
+		    
+		    string interactionShort = getInteraction(interaction);
+		    ingredientList[i] = ""+interactionShort+firstIngredient+secondIngredient+interactionShort[1]+interactionShort[0];
+		}
+		
+		foreach(string i in ingredientList){
+		    Console.Write(i);
+		}
+	}
+}
