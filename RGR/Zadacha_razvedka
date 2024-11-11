@@ -13,3 +13,5 @@ public class Test
 	    Console.WriteLine(even/3+ odd/3);
 	}
 }
+
+Решение неверное
