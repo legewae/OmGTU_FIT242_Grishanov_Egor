@@ -1,16 +1,26 @@
+//Задача про разделение группы наполовину пока не дойдут до групп по 3
+
 using System;
 using System.Collections;
 
 public class Test
 {
-    public static int returnGroups(int n){
-        if(n==3) return 1;
-        if (n<3) return 0;
-        
-        return returnGroups(n/2) + returnGroups(n/2 + n%2);
-    }
 	public static void Main()
 	{
-	   Console.WriteLine(returnGroups(Convert.ToInt32(Console.ReadLine())));
+	   //Заметил, что прямые степени двойки всегда имеют ответ 0, а далее все последующие X/2 чисел возрастают по порядку на 1 и обратно уменьшаются до 0, т.е. до того момента, пока не дойдут до следующей степени 2
+	   //Тогда можно найти ближайшую степень 2 и просто вычислить через неё
+	   
+	   int input = Convert.ToInt32(Console.ReadLine());
+	   int nearest = 1;
+	   
+	   while (nearest < input){
+	       nearest*=2;
+	   }
+	   
+	   nearest/=2;
+	   
+	   int ost = input - nearest;
+	   
+	   Console.WriteLine(Math.Min(ost, nearest - ost));
 	}
 }
