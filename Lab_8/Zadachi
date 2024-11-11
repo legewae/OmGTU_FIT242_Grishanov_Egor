@@ -1,0 +1,64 @@
+using System;
+using System.Collections;
+
+public class Test
+{
+    public static string removeSpacebars(string str){
+        int spaces = 0;
+        string output = "";
+        foreach(char c in str){
+            if(c==' '){
+                spaces++;
+            }else{
+                spaces = 0;
+            }
+            
+            if(spaces<=1) output=output + c;
+        }
+        return output;
+    }
+    
+    public static void outputPalindroms(string str){
+        string[] words = str.Split(' ');
+        
+        foreach(string word in words){
+            if (word == "") continue;
+            
+            string lowerWord = word.ToLower();
+            
+            bool palindrom = true;
+            for(int i = 0; i<lowerWord.Length/2; i++){
+                if(lowerWord[i] != lowerWord[lowerWord.Length - i - 1]){
+                    palindrom = false;
+                    break;
+                }
+            }
+            if(palindrom)Console.WriteLine(word);
+        }
+    }
+    public static int CountFirstAndLastEqual(string str){
+        string[] words = str.Split(' ');
+        
+        int count = 0;
+        
+        foreach(string word in words){
+            if (word == "") continue;
+            
+            string lowerWord = word.ToLower();
+            
+            if(lowerWord[0]==lowerWord[lowerWord.Length-1]) count++;
+        }
+        return count;
+    }
+    
+	public static void Main()
+	{
+	   string input = Console.ReadLine();
+	   
+	   Console.WriteLine(removeSpacebars(input));
+	   
+	   outputPalindroms(input);
+	   
+	   Console.WriteLine(CountFirstAndLastEqual(input));
+	}
+}
