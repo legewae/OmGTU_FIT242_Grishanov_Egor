@@ -1,0 +1,30 @@
+//На вход подаётся строка
+//Выяснить, какой символ чаще всего встречается в паре вида a*b, где * - символ
+//Длина строки >= 3
+
+using System;
+
+public class Test
+{
+	public static void Main()
+	{
+	    string a = Console.ReadLine();
+	    
+	    char result = ' ';
+	    int max = 0;
+	    int count = 0;
+	    for (int b = 0; b< a.Length;b++){
+	        for(int i = 1;i<(a.Length -1);i++){
+	            if(a[i-1] == 'a' && a[i+1] == 'b' && a[i] == a[b]){
+	                count++;
+	                if(max < count){
+	                    max = count;
+	                    result = a[b];
+	                }
+	            }
+	        }
+	    }
+	    Console.WriteLine(result);
+	}
+}
+
