@@ -24,7 +24,7 @@ public class Test
 	                max=count;
 	            }
 	        }else{
-	            count = 1; //Если после обнуления сразу идёт нужный символ, то если мы не прибавим единицу, его не посчитают. 
+	            count = combination[0]==a[i]? 1:0;
 	        }
 	    }
 	    Console.WriteLine(max);
