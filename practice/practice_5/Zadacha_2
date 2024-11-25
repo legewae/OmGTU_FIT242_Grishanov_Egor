@@ -1,0 +1,33 @@
+//Получаем строку на вход
+//Нужно найти максимальную подпоследовательность, состоящую из комбинации abc, причем конец подпоследовательности может обрываться на соответствующем элементе комбинации
+//abcabc = 6
+//abcab = 5
+//abcxabcab = 5
+//abcabcba = 6
+//abca = 4
+using System;
+
+public class Test
+{
+	public static void Main()
+	{
+	    string a = Console.ReadLine();
+	    string combination = "abc"; //Можно любую комбинацию
+	    
+	    int max = 0;
+	    int count = 0;
+	    
+	    for(int i = 0; i<a.Length;i++){
+	        if(a[i]==combination[count%combination.Length]){
+	            count++;
+	            if(count>max){
+	                max=count;
+	            }
+	        }else{
+	            count = 1; //Если после обнуления сразу идёт нужный символ, то если мы не прибавим единицу, его не посчитают. 
+	        }
+	    }
+	    Console.WriteLine(max);
+	}
+}
+
