@@ -1,0 +1,72 @@
+using System;
+
+public class Test
+{
+    public class student{
+       public string fio;
+       public int birthyear;
+       public int kurs;
+       public student(string fio, int birthyear, int kurs){
+           this.fio = fio;
+           this.birthyear = birthyear;
+           this.kurs = kurs;
+       }
+    }
+    public static void printSameKurs(ref student[] students, int kurs){
+        for(int i = 0; i<students.Length; i++){
+            if(students[i].kurs==kurs){
+                Console.WriteLine(students[i].fio);
+            }
+        }
+       }
+        public static void printSameBirthyear(ref student[] students, int birthyear){
+        for(int i = 0; i<students.Length; i++){
+            if(students[i].birthyear==birthyear){
+                Console.WriteLine(students[i].fio);
+            }
+        }
+       }
+    public static void fill(ref student[] students){
+        for(int i = 0; i<students.Length; i++){
+            students[i] = new student(Console.ReadLine(),Convert.ToInt32(Console.ReadLine()),Convert.ToInt32(Console.ReadLine()));
+        }
+        }
+    
+	public static void Main(){
+	    int amount = Convert.ToInt32(Console.ReadLine());
+	    student[] students = new student[amount];
+	    string choice = "nice";
+	    while(choice!="5"){
+	        choice = Console.ReadLine();
+	        switch(choice){
+	            case "1": { fill(ref students);break;}
+	            case "2": {
+	                Console.WriteLine("Введите номер студента, потом название поля, потом его новое значение");
+	                int n = Convert.ToInt32(Console.ReadLine());
+	                if(n>=students.Length || n<= 0){ Console.WriteLine("Такого студента нет"); break;}
+	                string field = Console.ReadLine();
+	                switch(field){
+	                    case "fio":{ students[n].fio = Console.ReadLine(); break;}
+	                    case "birthyear" :{
+	                        students[n].birthyear = Convert.ToInt32(Console.ReadLine());
+	                        break;
+	                    }
+	                    case "kurs": {
+	                        students[n].kurs = Convert.ToInt32(Console.ReadLine()); break;
+	                    }
+	                    default:{
+	                        Console.WriteLine($"Не найдено поле {field}");
+	                        break;
+	                    }
+	                }
+	                break;
+	            }
+	            case "3": {printSameBirthyear(ref students, Convert.ToInt32(Console.ReadLine()));break;}
+	            case "4":
+	            {
+	                printSameKurs(ref students, Convert.ToInt32(Console.ReadLine())); break;
+	            }
+	        }
+	    }
+		}
+}
