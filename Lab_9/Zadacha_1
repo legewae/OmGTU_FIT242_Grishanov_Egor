@@ -1,0 +1,53 @@
+using System;
+
+public class Test
+{
+    public class vector2{
+        public int x,y;
+        
+        public vector2(){
+            this.x =0;
+            this.y=0;
+        }
+        public vector2(int x){
+            this.x=x;
+            this.y=0;
+        }
+        public vector2(int x,int y){
+            this.x=x;
+            this.y=y;
+        }
+        
+        public int sum(){
+            return this.x+this.y;
+        }
+        public int sub(int x, int y){
+            return x - y;
+         }
+         public int mul(){
+             return this.x* this.y;
+         }
+         public int div(){
+             if(this.y==0){
+                 Console.WriteLine("Division by zero");
+                 return 0;}
+             return this.x/this.y;
+         }
+         public void print(){
+             Console.WriteLine($"({this.x},{this.y})");
+         }
+    }
+	public static void Main()
+	{
+		vector2 vec1 = new vector2();
+		vector2 vec2= new vector2(2);
+		vector2 vec3 = new vector2(30,4);
+		vec1.print();
+		vec2.print();
+		vec3.print();
+		
+		Console.WriteLine($"vector 1: sum: {vec1.sum()}, sub xy: {vec1.sub(vec1.x,vec1.y)}, sub yx: {vec1.sub(vec1.y,vec1.x)},mul: {vec1.mul()}, div: {vec1.div()}");
+		Console.WriteLine($"vector 2: sum: {vec2.sum()}, sub xy: {vec2.sub(vec2.x,vec2.y)}, sub yx: {vec2.sub(vec2.y,vec2.x)},mul: {vec2.mul()}, div: {vec2.div()}");
+		Console.WriteLine($"vector 3: sum: {vec3.sum()}, sub xy: {vec1.sub(vec3.x,vec3.y)}, sub yx: {vec3.sub(vec3.y,vec3.x)},mul: {vec3.mul()}, div: {vec3.div()}");
+	}
+}
