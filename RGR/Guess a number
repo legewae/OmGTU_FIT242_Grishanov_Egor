@@ -1,0 +1,27 @@
+using System;
+
+public class Test
+{
+    public class Unknown{
+        public int unknown;
+        public int known;
+        public Unknown(int unknown, int known){
+            this.known=known;
+            this.unknown=unknown;
+        }
+        public void multiply(int coof){
+            this.known*=coof;
+            this.unknown*=coof;
+        }
+    }
+	public static void Main()
+	{
+		Unknown answer = new Unknown(1,0);
+		answer.known+=2;
+		answer.multiply(3);
+		answer.known-=5;
+		answer.unknown-=1;
+		
+		Console.WriteLine((7 - answer.known)/answer.unknown);
+	}
+}
