@@ -1,0 +1,26 @@
+using System;
+
+public class Test
+{
+	public static void Main()
+	{
+		string cifr = Console.ReadLine();
+		string[] words = cifr.Split(' ');
+		
+		string[] ans = new string[words.Length] ;
+		
+		//Меняем порядок слов
+		string new_frasa = "";
+		for(int i = 0; i < words.Length; i++){
+		    string word = i%2==0? words[words.Length/2 + i/2] : words[words.Length/2 - i/2 - 1];
+		    //Аналогично изменяем порядок букв
+		    string new_word = "";
+		    for(int b = 0; b < word.Length; b++){
+		        new_word += b%2==0? word[word.Length/2 + b/2] : word[word.Length/2 - b/2 - 1];
+		    }
+		    
+		    new_frasa += new_word + (i== words.Length-1? "": " ");
+		}
+		Console.WriteLine(new_frasa);
+	}
+}
