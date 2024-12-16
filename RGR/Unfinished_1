@@ -14,41 +14,41 @@ public class Test
     }
 	public static void Main()
 	{
-	    string[,] moves = new string[100,3];
-	    moves[0,0] = "DUST";
-	    moves[0,1] = "root";
-	    moves[0,2] = "teeth";
 	    
-	    moves[1,0] = "WATER";
-	    moves[1,1] = "1";
-	    moves[1,2] = "tear";
+	    string[][] moves = new string[100][];
+	    
+	    int count = 0;
+	    while(true){
+	        string inp = Console.ReadLine();
+	        if(inp == "e")break;
+	        string[] words = inp.Split();
+	        moves[count] = new string[words.Length];
+	        for(int i = 0; i < words.Length;i++){
+	            moves[count][i] = words[i];
+	        }
+	        count++;
+
+	    }
 	    
 	    string[] ingredientList = new string[100]; 
 	    
 		string result = "";
 		
-		for(int i = 0; i < 2; i++){
-		    string interaction = moves[i,0];
-		    string firstIngredient = moves[i,1];
-		    string secondIngredient = moves[i,2];
-		    if(int.TryParse(firstIngredient, out _)){
-		        int temp = Convert.ToInt32(firstIngredient)-1;
-		        firstIngredient = ingredientList[temp];
-		        ingredientList[temp] = "";
-		    }
-
-		    if(int.TryParse(secondIngredient,out _)){
-		        int temp = Convert.ToInt32(secondIngredient)-1;
-		        secondIngredient = ingredientList[temp];
-		        ingredientList[temp] = "";
-		    }
-		    
+		for(int i = 0; i < count; i++){
+		    string interaction = moves[i][0];
 		    string interactionShort = getInteraction(interaction);
-		    ingredientList[i] = ""+interactionShort+firstIngredient+secondIngredient+interactionShort[1]+interactionShort[0];
+		    ingredientList[i] = ""+interactionShort;
+		    for (int b = 1; b < moves[i].Length;b++){
+		        string ingredient = moves[i][b];
+		        if(int.TryParse(ingredient, out _)){
+		            int temp = Convert.ToInt32(ingredient)-1;
+		            ingredient = ingredientList[temp];
+		        }
+		        ingredientList[i] += ingredient;
+		    }
+		    ingredientList[i] = ingredientList[i]+interactionShort[1]+interactionShort[0];
 		}
 		
-		foreach(string i in ingredientList){
-		    Console.Write(i);
-		}
+		Console.WriteLine(ingredientList[count-1]);
 	}
 }
