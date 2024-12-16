@@ -13,25 +13,39 @@ public class Test
        }
     }
     public static void printSameKurs(ref student[] students, int kurs){
+        int count = 0;
         for(int i = 0; i<students.Length; i++){
             if(students[i].kurs==kurs){
+                count++;
                 Console.WriteLine(students[i].fio);
             }
         }
+        if(count==0)Console.WriteLine("Не найдено студентов");
        }
         public static void printSameBirthyear(ref student[] students, int birthyear){
+        int count = 0;
         for(int i = 0; i<students.Length; i++){
             if(students[i].birthyear==birthyear){
+                count++;
                 Console.WriteLine(students[i].fio);
             }
         }
+        if(count==0)Console.WriteLine("Не найдено студентов");
        }
     public static void fill(ref student[] students){
         for(int i = 0; i<students.Length; i++){
             Console.WriteLine($"Введите сначала ФИО, потом год рождения, потом курс данного студента №{i}");
             students[i] = new student(Console.ReadLine(),Convert.ToInt32(Console.ReadLine()),Convert.ToInt32(Console.ReadLine()));
         }
+    }
+    public static int findStudent(ref student[] students, string fio){
+        for(int i = 0; i<students.Length;i++){
+            if (students[i].fio == fio){
+                return i;
+            }
         }
+        return -1;
+    }
     
 	public static void Main(){
 	    bool filled = false;
@@ -54,10 +68,10 @@ public class Test
 	                
 	                if(!filled){Console.WriteLine("Заполните массив студентов перед началом!"); break;}
 	                
-	                Console.WriteLine("Введите номер студента, потом название поля, потом его новое значение(fio, birthyear или kurs)");
+	                Console.WriteLine("Введите ФИО студента, потом название поля(fio, birthyear или kurs), потом его новое значение");
 	                
-	                int n = Convert.ToInt32(Console.ReadLine());
-	                if(n>=students.Length || n< 0){ Console.WriteLine("Такого студента нет"); break;}
+	                int n = findStudent(ref students,Console.ReadLine());
+	                if(n==-1){ Console.WriteLine("Такого студента нет"); break;}
 	                string field = Console.ReadLine();
 	                switch(field){
 	                    case "fio":{ students[n].fio = Console.ReadLine(); break;}
