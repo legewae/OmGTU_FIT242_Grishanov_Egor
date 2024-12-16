@@ -28,22 +28,36 @@ public class Test
        }
     public static void fill(ref student[] students){
         for(int i = 0; i<students.Length; i++){
+            Console.WriteLine($"Введите сначала ФИО, потом год рождения, потом курс данного студента №{i}");
             students[i] = new student(Console.ReadLine(),Convert.ToInt32(Console.ReadLine()),Convert.ToInt32(Console.ReadLine()));
         }
         }
     
 	public static void Main(){
+	    bool filled = false;
 	    int amount = Convert.ToInt32(Console.ReadLine());
 	    student[] students = new student[amount];
 	    string choice = "nice";
 	    while(choice!="5"){
+	        Console.WriteLine("1 - Заполнить массив студентов");
+	        Console.WriteLine("2 - Изменить существующего студента");
+	        Console.WriteLine("3 - Вывести стундентов с N годом рождения");
+	        Console.WriteLine("4 - Вывести стундентов с N курса");
+	        Console.WriteLine("5 - Выход из программы");
+	        
 	        choice = Console.ReadLine();
+	        
 	        switch(choice){
-	            case "1": { fill(ref students);break;}
+	            case "1": { fill(ref students); filled = true;break;}
+	            
 	            case "2": {
-	                Console.WriteLine("Введите номер студента, потом название поля, потом его новое значение");
+	                
+	                if(!filled){Console.WriteLine("Заполните массив студентов перед началом!"); break;}
+	                
+	                Console.WriteLine("Введите номер студента, потом название поля, потом его новое значение(fio, birthyear или kurs)");
+	                
 	                int n = Convert.ToInt32(Console.ReadLine());
-	                if(n>=students.Length || n<= 0){ Console.WriteLine("Такого студента нет"); break;}
+	                if(n>=students.Length || n< 0){ Console.WriteLine("Такого студента нет"); break;}
 	                string field = Console.ReadLine();
 	                switch(field){
 	                    case "fio":{ students[n].fio = Console.ReadLine(); break;}
@@ -61,7 +75,9 @@ public class Test
 	                }
 	                break;
 	            }
+	            
 	            case "3": {printSameBirthyear(ref students, Convert.ToInt32(Console.ReadLine()));break;}
+	            
 	            case "4":
 	            {
 	                printSameKurs(ref students, Convert.ToInt32(Console.ReadLine())); break;
