@@ -1,23 +1,16 @@
-//Задача про разделение группы наполовину пока не дойдут до групп по 3
-
 using System;
-using System.Collections;
-
 public class Test
 {
 	public static void Main()
 	{  
-	   int input = Convert.ToInt32(Console.ReadLine());
+	   int N = Convert.ToInt32(Console.ReadLine());
 	   int nearest = 1;
 	   
-	   while (nearest < input){
+	   while (nearest < N){
 	       nearest*=2;
-	   }
-	   
-	   nearest/=2;
-	   
-	   int ost = input - nearest;
-	   
+	   }	   
+	   nearest/=2;	   
+	   int ost = N - nearest;
 	   Console.WriteLine(Math.Min(ost, nearest - ost));
 	}
 }
