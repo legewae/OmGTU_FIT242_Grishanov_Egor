@@ -1,0 +1,18 @@
+using System;
+
+
+public class Program
+{
+	public static void Main()
+	{
+		string[] inp = Console.ReadLine().Split('.');
+		DateTime dateStart = new DateTime(Convert.ToInt32(inp[2]), Convert.ToInt32(inp[1]), Convert.ToInt32(inp[0]));
+		inp = Console.ReadLine().Split('.');
+		DateTime dateOver = new DateTime(Convert.ToInt32(inp[2]), Convert.ToInt32(inp[1]), Convert.ToInt32(inp[0]));
+		double totalDays = (dateOver - dateStart).TotalDays;
+		int p = Convert.ToInt32(Console.ReadLine());
+		Console.WriteLine(totalDays);
+		Console.WriteLine((p*2 + totalDays)/2 * (totalDays+1));
+	}
+}
+
