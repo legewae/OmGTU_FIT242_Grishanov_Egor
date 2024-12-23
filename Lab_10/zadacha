@@ -1,0 +1,142 @@
+using System;
+//Есть класс люди, характеризуется полями ФИО, год рождения
+//2 наследника
+//Студенты, характеризуются массивом оценок
+//Преподаватели, характеризуются массив наименований предметов
+
+//Меню:
+//1. Заполнение
+//2. Печать данных
+//3. Выборка студентов по году рождения
+//4. Выборка преподавателей по наименованию дисциплины
+//5. Выход
+
+public class Program
+{
+	public class people{
+	    public string FIO;
+	    public int birthyear;
+		
+		public people(string FIO, int birthyear){
+		    this.FIO = FIO;
+			this.birthyear = birthyear;
+		}
+	}
+	public class student: people{
+		public int[] marks;
+		public student(string FIO, int birthyear, int[] marks) : base(FIO, birthyear){
+			this.marks = marks;
+		}
+	}
+	public class professor: people{
+	    public string[] disciplines;
+		public professor(string FIO, int birthyear, string[] disciplines) : base(FIO, birthyear){
+			this.disciplines = disciplines;
+		}
+	}
+	
+	public static void Main()
+	{
+		bool filled = false;
+		bool exit = false;
+		
+		student[] students = new student[0];
+		professor[] professors = new professor[0];
+		
+		while(!exit){
+		    Console.WriteLine("<---МЕНЮ--->");
+			Console.WriteLine("1.Заполнение\n2.Печать данных\n3.Выборка студентов по году рождения\n4.Выборка преподавателей по предмету\n5.Выход");
+			string input = Console.ReadLine();
+			
+			switch(input){
+				case "1":{
+					Console.WriteLine("Введите кол-во студентов");
+					int c = Convert.ToInt32(Console.ReadLine());
+					students = new student[c];
+					for(int i = 0; i<c; i++){
+						Console.WriteLine($"Введите строку ФИО студента #{i+1}");
+						string FIO = Console.ReadLine();
+						Console.WriteLine($"Введите год рождения студента {FIO}");
+						int birthyear = Convert.ToInt32(Console.ReadLine());
+						Console.WriteLine($"Введите строку оценок студента {FIO} (через пробел каждая)");
+					    string marks_s = Console.ReadLine();
+						string[] marks_a = marks_s.Split(' ');
+						int[] marks = new int[marks_a.Length];
+						for(int b = 0; b<marks.Length;b++){
+							marks[b] = Convert.ToInt32(marks_a[b]);
+						}
+						students[i] = new student(FIO, birthyear, marks);
+					}
+					Console.WriteLine("Введите кол-во преподавателей");
+					c = Convert.ToInt32(Console.ReadLine());
+					professors = new professor[c];
+					for(int i = 0; i<c; i++){
+						Console.WriteLine($"Введите строку ФИО преподавателя #{i+1}");
+						string FIO = Console.ReadLine();
+						Console.WriteLine($"Введите год рождения преподавателя {FIO}");
+						int birthyear = Convert.ToInt32(Console.ReadLine());
+						Console.WriteLine($"Введите кол-во предметов у преподавателя {FIO}");
+					    int count = Convert.ToInt32(Console.ReadLine());
+						string[] disciplines = new string[count];
+						for(int b = 0; b<count;b++){
+							Console.WriteLine($"Введите предмет #{b+1} у преподавателя {FIO}");
+							disciplines[b] = Console.ReadLine();
+						}
+						professors[i] = new professor(FIO, birthyear, disciplines);
+					}
+					filled = true;
+					break;}
+				case "2":
+					if(!filled){Console.WriteLine("Массивы не заполнены, выберите сначала пункт 1 и заполните их."); break;}
+					Console.WriteLine("]n<-Студенты->");
+					for(int i = 0; i< students.Length; i++){
+					    Console.WriteLine($"Студент {students[i].FIO}:");
+						Console.WriteLine($"Год рождения {students[i].birthyear}");
+						Console.Write("Оценки: ");
+						foreach(int mark in students[i].marks){
+						    Console.Write($"{mark} ");
+						}
+					}
+					Console.WriteLine("\n\n<-Преподаватели->");
+					for(int i = 0; i< professors.Length; i++){
+					    Console.WriteLine($"Преподаватель {professors[i].FIO}:");
+						Console.WriteLine($"Год рождения {professors[i].birthyear}");
+						Console.WriteLine("Предметы: ");
+						foreach(string s in professors[i].disciplines){
+						    Console.WriteLine($"{s}");
+						}
+					}
+					break;
+				case "3":
+					Console.WriteLine("Введите год:");
+					int year = Convert.ToInt32(Console.ReadLine());
+					bool found = false;
+					for(int i = 0;i<students.Length;i++){
+					     if(students[i].birthyear==year){
+						     found = true;
+							 Console.WriteLine($"Студент {students[i].FIO}");
+						 }
+					}
+					if(!found)Console.WriteLine("Не найдено");
+					break;
+			    case "4":
+					Console.WriteLine("Введите предмет:");
+					string discipline = Console.ReadLine();
+					found = false;
+					for(int i = 0;i<professors.Length;i++){
+					     foreach(string dis in professors[i].disciplines){
+						     if(dis == discipline){
+							     Console.WriteLine($"Преподаватель {professors[i].FIO}");
+								 found = true;
+								 break;
+							 }
+						 }
+					}
+					if(!found)Console.WriteLine("Не найдено");
+					break;
+				case "5": exit = true; break;
+					
+			}
+		}
+	}
+}
