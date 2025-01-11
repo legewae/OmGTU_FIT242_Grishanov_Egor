@@ -1,0 +1,57 @@
+using System;
+
+class Program{
+    public class Train{
+        public string destination;
+        public int number;
+        public int time;
+        public Train(string destination, int number, int time){
+            this.destination = destination; 
+            this.number = number;
+            this.time = time;
+        }
+    }
+    public class Station{
+        public string Name;
+        public Train[] Trains;
+        public Station(string name, Train[] trains){
+            this.Name = name;
+            this.Trains = trains;
+        }
+    }
+    public static void Main(string[] args){
+        bool filled = false;
+        bool exit = false;
+        Station station;
+        while (!exit){
+            Console.WriteLine("1.Заполнение станции");
+            Console.WriteLine("2.Изменение поезда станции");
+            Console.WriteLine("3.Вывод всех поездов с отправлением после X");
+            Console.WriteLine("4.Выход");
+            Console.Write("Ввод: ");
+            string ans = Console.ReadLine();
+            switch(ans){
+                case "1":{
+                    
+                    Console.WriteLine("Введите название станции:");
+                    string station_name = Console.ReadLine();
+                    Console.WriteLine("Введите кол-во поездов на станции:");
+                    int t = Convert.ToInt32(Console.ReadLine());
+                    Train[] train_list = new Train[t];
+                    for(int b = 0; b < t; b++){
+                        Console.WriteLine($"Введите место назначение поезда #{b}:");
+                        string dest = Console.ReadLine();
+                        Console.WriteLine($"Введите номер поезда #{b}:");
+                        int num = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine($"Введите время отправления поезда #{b}:");
+                        int time = Convert.ToInt32(Console.ReadLine());
+                        train_list[b] = new Train(dest,num,time);
+                    }
+                    station = new Station(station_name, train_list);
+                    filled = true;
+                    break;
+                }
+            }
+        }
+   }
+}
