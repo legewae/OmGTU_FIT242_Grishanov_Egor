@@ -1,5 +1,4 @@
 using System;
-
 class Program{
     public class Train{
         public string destination;
@@ -18,18 +17,20 @@ class Program{
             this.Name = name;
             this.Trains = trains;
         }
+     
     }
     public static void Main(string[] args){
         bool filled = false;
         bool exit = false;
-        Station station;
+        Train[] train_list = new Train[0];
+        Station station = new Station("",train_list);
         while (!exit){
             Console.WriteLine("1.Заполнение станции");
-            Console.WriteLine("2.Изменение поезда станции");
-            Console.WriteLine("3.Вывод всех поездов с отправлением после X");
-            Console.WriteLine("4.Выход");
-            Console.Write("Ввод: ");
+            Console.WriteLine("2.Вывод всех поездов с отправлением после X");
+            Console.WriteLine("3.Выход");
+            Console.WriteLine("Ввод: ");
             string ans = Console.ReadLine();
+           
             switch(ans){
                 case "1":{
                     
@@ -37,7 +38,7 @@ class Program{
                     string station_name = Console.ReadLine();
                     Console.WriteLine("Введите кол-во поездов на станции:");
                     int t = Convert.ToInt32(Console.ReadLine());
-                    Train[] train_list = new Train[t];
+                    train_list = new Train[t];
                     for(int b = 0; b < t; b++){
                         Console.WriteLine($"Введите место назначение поезда #{b}:");
                         string dest = Console.ReadLine();
@@ -49,6 +50,28 @@ class Program{
                     }
                     station = new Station(station_name, train_list);
                     filled = true;
+                    break;
+                }
+                case "2":{
+                    if(!filled){Console.WriteLine("Станция не заполнена"); break;}
+                    
+                    int time = Convert.ToInt32(Console.ReadLine());
+                    
+                    bool found = false;
+                    foreach(Train tr in station.Trains){
+                        if(tr.time > time){
+                            Console.WriteLine($"Поезд {tr.number}");
+                            Console.WriteLine($"Время отправления: {tr.time}");
+                            Console.WriteLine($"Точка назначения: {tr.destination}");
+                            Console.WriteLine("");
+                            found = true;
+                        }
+                    }
+                    if(!found){Console.WriteLine("Не найдено поездов");}
+                    break;
+                }
+                case "3":{
+                    exit = true;
                     break;
                 }
             }
