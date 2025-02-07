@@ -1,0 +1,156 @@
+using System;
+
+class Program{
+    public class phonenumber{
+        public string number;
+        public string oper;
+        public int year;
+
+        public phonenumber(string number, string oper, int year) {
+             this.number = number;
+             this.oper = oper;
+             this.year = year;
+             }
+    }
+
+    public class abonent{
+        public string name, town;
+
+        public phonenumber[] numbers;
+
+        public abonent(string name, string town, phonenumber[] numbers) {
+            this.name = name;  
+            this.town = town;
+            this.numbers = numbers;
+        }
+    }
+    static void Main(string[] args){
+        bool filled = false;
+        bool exit = false;
+        abonent[] ab = new abonent[0];
+        Console.WriteLine("Перед началом работы заполните базу данных");
+        while(!exit){
+            Console.WriteLine("\n---Выберите действие:---");
+            Console.WriteLine("1. Заполнение базы данных");
+            Console.WriteLine("2. Вывод абонентов оператора X");
+            Console.WriteLine("3. Вывод абонентов города X");
+            Console.WriteLine("4. Вывод абонента с номером X");
+            Console.WriteLine("5. Вывод абонента по ФИО");
+            Console.WriteLine("6. Выход");
+            
+            string inp = Console.ReadLine();
+
+            switch(inp){
+                case "1":{
+                    Console.WriteLine("Введите кол-во абонентов");
+                    int count = Convert.ToInt32(Console.ReadLine());
+                    ab = new abonent[count];
+                    for(int i = 1; i <= count; i++){
+                        Console.WriteLine($"\n---Абонент #{i}---");
+                        Console.WriteLine("Введите ФИО абонента");
+                        string FIO = Console.ReadLine();
+                        Console.WriteLine("Введите город(село, деревня...) проживания абонента");
+                        string town = Console.ReadLine();
+
+                        Console.WriteLine("Введите кол-во номеров у абонента(От 1 до 100)");
+                        int nums = Math.Clamp(Convert.ToInt32(Console.ReadLine()),1,100);
+                        phonenumber[] numbers = new phonenumber[nums];
+                        for (int b = 1;b<=nums;b++){
+                            Console.WriteLine($"[-Номер {b}-]");
+                            Console.WriteLine("Введите номер");
+                            string number = Console.ReadLine();
+                            Console.WriteLine("Введите оператора");
+                            string op = Console.ReadLine();
+                            Console.WriteLine("Введите год подключения номера");
+                            int y = Convert.ToInt32(Console.ReadLine());
+
+                            numbers[b-1] = new phonenumber(number,op,y);
+                        }
+
+                        ab[i-1] = new abonent(FIO, town, numbers);
+                    }
+                    filled = true;
+                    break;
+                }
+                case "2":{
+                    if(!filled){Console.WriteLine("Заполните базу данных"); break;}
+
+                    Console.WriteLine("Введите оператора");
+                    string op = Console.ReadLine();
+                    bool found = false;
+                    for(int i = 0; i<ab.Length; i++){
+                        for(int b = 0; b<ab[i].numbers.Length;b++){
+                            if(ab[i].numbers[b].oper == op){
+                                Console.WriteLine($"Абонент {ab[i].name}: {ab[i].numbers[b].number}");
+                                found = true;
+                            }
+                        }
+                    }
+                    if(!found){Console.WriteLine(">>Не найдено!<<");}
+                    break;
+                }
+                case "3":{
+                    if(!filled){Console.WriteLine("Заполните базу данных"); break;}
+
+                    Console.WriteLine("Введите город");
+                    string town = Console.ReadLine();
+                    bool found = false;
+                    for(int i = 0; i<ab.Length; i++){
+                            if(ab[i].town == town){
+                            Console.WriteLine($"Абонент {ab[i].name}");
+                            found = true;
+                        }
+                    }
+                    if(!found){Console.WriteLine(">>Не найдено!<<");}
+                    break;
+                }
+                case "4":{
+                    if(!filled){Console.WriteLine("Заполните базу данных"); break;}
+
+                    Console.WriteLine("Введите номер абонента");
+                    string n = Console.ReadLine();
+                    bool found = false;
+                    for(int i = 0; i<ab.Length; i++){
+                        for(int b = 0; b<ab[i].numbers.Length;b++){
+                            if(ab[i].numbers[b].number == n){
+                                found = true;
+                                abonent foundabonent = ab[i];
+                                Console.WriteLine($"\nАбонент {foundabonent.name}:");
+                                Console.WriteLine($"Город: {foundabonent.town}");
+                                Console.WriteLine($"Год подключения номера: {foundabonent.numbers[b].year}");
+                                break;
+                            }
+                        }
+                        if(found)break;
+                    }
+                    if(!found){Console.WriteLine(">>Не найдено!<<");}
+                    break;
+                }
+                case "5":{
+                    if(!filled){Console.WriteLine("Заполните базу данных"); break;}
+
+                    Console.WriteLine("Введите ФИО абонента:");
+                    string searchname = Console.ReadLine();
+                    bool found = false;
+                    for(int i = 0; i<ab.Length; i++){
+                            if(ab[i].name == searchname){
+                                Console.WriteLine($"Город: {ab[i].town}");
+                                Console.WriteLine("Номера абонента:");
+                                for(int b = 0; b<ab[i].numbers.Length; b++){
+                                    Console.WriteLine($"{b+1}. {ab[i].numbers[b].number} ({ab[i].numbers[b].oper})");
+                                }
+                                found = true;
+                                break;
+                        }
+                    }
+                    if(!found){Console.WriteLine(">>Не найдено!<<");}
+                    break;
+                }
+                case "6":{
+                    exit = true;
+                    break;
+                }
+            }
+        }
+    }
+}
