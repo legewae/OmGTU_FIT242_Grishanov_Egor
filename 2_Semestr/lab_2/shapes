@@ -1,0 +1,43 @@
+
+class Program{
+    public class Shape{
+        string name;
+        public Shape(string name) { this.name = name;}
+    }
+    public interface IShape{
+        double perimetr();
+        double area();
+    }
+
+    public class Square: Shape, IShape{
+        public double x;
+        public double perimetr() { return 4*x; }
+        public double area() { return x*x;}
+
+        public Square(double x):base("square"){this.x = x;}
+    }
+    public class Triangle: Shape, IShape{
+        public double x;
+        public double perimetr() { return 3*x; }
+        public double area() { return Math.Sqrt(3)*x*x/4;}
+
+        public Triangle(double x):base("triangle"){this.x = x;}
+    }
+
+    public class Circle: Shape, IShape{
+        public double x;
+        public double perimetr() { return Math.PI*x*2; }
+        public double area() { return x*x*Math.PI;}
+
+        public Circle(double x):base("circle"){this.x = x;}
+    }
+    public static void Main(string[] args){
+        Square square = new Square(Convert.ToDouble(Console.ReadLine()));
+        Triangle triangle = new Triangle(Convert.ToDouble(Console.ReadLine()));
+        Circle circle = new Circle(Convert.ToDouble(Console.ReadLine()));
+        
+        Console.WriteLine($"Квадрат: S = {square.area()} P = {square.perimetr()}");
+        Console.WriteLine($"Треугольник: S = {triangle.area()} P = {triangle.perimetr()}");
+        Console.WriteLine($"Круг: S = {circle.area()} P = {circle.perimetr()}");
+    }
+}
