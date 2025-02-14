@@ -9,8 +9,16 @@ class Program{
         for(int i = 1; i < matrix.GetLength(0); i++){
             unused[i] = i+1;
         }
-
-        for(int i = 0; i < )
+        
+        for(int i = 0; i < used.Length;i++){
+            for (int j = 0; j < used.Length; j++){
+                if(unused[j] == -1) continue;
+                if(matrix[i,j]!=0){
+                    unused[j] = -1;
+                    used[j] = j+1;
+                }
+            }
+        }
         return 0;
     }
 
