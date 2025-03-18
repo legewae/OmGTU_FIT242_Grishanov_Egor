@@ -1,0 +1,55 @@
+//График взят из https://ru.wikipedia.org/wiki/Алгоритм_Дейкстры
+
+using System;
+
+namespace ConsoleApplication2
+{
+    class Program
+    {
+        public static void Main(string[] args)
+        {
+            int[,] matrix = { {0,7,9,0,0,14},  //0
+                              {7,0,10,15,0,0 },//1
+                              {9,10,0,11,0,2 },//2
+                              {0,15,11,0,6,0}, //3
+                              {0,0,0,6,0,9 },  //4
+                              {14,0,2,0,9,0 }};//5
+            double[] weighttable = new double[matrix.GetLength(0)];
+
+            int currentpoint = 0;
+            int finishpoint = 4;
+
+            double[] weights = new double[matrix.GetLength(0)];
+            for(int i = 1; i< weights.Length; i++)
+            {
+                weights[i] = double.PositiveInfinity;
+            }
+
+            HashSet<int> visited = new HashSet<int>();
+            visited.Add(currentpoint);
+
+            for (int _ = 0; _ < matrix.GetLength(0); _++) {
+                {
+                    int toVisit = -1;
+                    double min = Int32.MaxValue;
+                    for (int i = 0; i < matrix.GetLength(0); i++)
+                    {
+                        if (i == currentpoint || matrix[currentpoint, i] == 0 || visited.Contains(i)) continue;
+
+                        weights[i] = Math.Min(weights[i],matrix[currentpoint, i] + weights[currentpoint]);
+                        if (min > weights[i])
+                        {
+                            min = weights[i];
+                            toVisit = i;
+                        }
+                    }
+                    currentpoint = toVisit;
+                    visited.Add(toVisit);
+
+                    if (currentpoint == finishpoint) break;
+                }
+            }
+            Console.WriteLine(weights[finishpoint]); //Ответ 20
+        }
+    }
+}
