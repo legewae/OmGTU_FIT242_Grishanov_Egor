@@ -1,0 +1,44 @@
+using System;
+
+namespace ConsoleApplication2
+{
+    class Program
+    {
+        public static double[,] computator(double[,] matrix)
+        {
+            for (int i = 0; i < matrix.GetLength(1); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+            {
+                    for (int k = 0; k < matrix.GetLength(1); k++)
+            {
+                matrix[i, k] = Math.Min(matrix[i, k], matrix[i, j] + matrix[j, k]);
+            }
+            }
+            }
+
+            return matrix;
+        }
+        static void Main(string[] args)
+        {
+            const double big = double.PositiveInfinity;
+            double[,] matrix = { { 0, 10, 18, 8, big, big },
+                              {10, 0, 16, 9, 21, big,},
+                              {big, 16, 0, big, big, 15},
+                              {7, 9, big, 0, big, 12},
+                              {big, big, big, big, 0, 23},
+                              {big, big, 15, big, 23, 0}};
+
+            matrix = computator(matrix);
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                Console.WriteLine("");
+                for (int j = 0; j < matrix.GetLength(0); j++)
+                {
+                    Console.Write(" ");
+                    Console.Write(matrix[i,j]==Int16.MaxValue? -1 : matrix[i,j]);
+                }
+            }
+        }
+    }
+}
