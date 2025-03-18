@@ -1,0 +1,56 @@
+using System;
+using System.Collections.Generic;
+
+namespace ConsoleApp4
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string[] rebra = { "ab", "bc", "ce", "eb", "bd", "de", "ef", "df", "fg", "ge", "ad" };
+            int[] weights = { 7, 8, 5, 7, 9, 15, 8, 6, 11, 9, 5 };
+
+            HashSet<char> used = new HashSet<char>(); // HashSet позволяет не волноваться о повторениях
+            string res = "";
+            int totalWeight = 0;
+            used.Add(rebra[0][0]); //Начало с первого узла
+
+            bool loop = true;
+            while (loop)
+            {
+                int minWeight = Int32.MaxValue;
+                string shortestPath = "";
+                int selected = -1;
+
+                for(int i = 0; i<rebra.Length;i++)
+                {
+                    string edge = rebra[i];
+                    if (used.Contains(edge[0]) && !used.Contains(edge[1]) && weights[i] < minWeight)
+                    {
+                        minWeight = weights[i];
+                        shortestPath = edge;
+                        selected = i;
+                    }
+                    else if (used.Contains(edge[1]) && !used.Contains(edge[0]) && weights[i] < minWeight)
+                    {
+                        minWeight = weights[i];
+                        shortestPath = edge;
+                        selected = i;
+                    }
+                }
+
+                if (selected != -1)
+                {
+                    totalWeight += minWeight;
+                    res += shortestPath + " ";
+                    used.Add(shortestPath[0]);
+                    used.Add(shortestPath[1]);
+                }
+                else loop = false;
+            }
+
+            Console.WriteLine($"Минимальная длина дерева: {totalWeight}");
+            Console.WriteLine($"Ребра такого дерева: {res}");
+        }
+    }
+}
