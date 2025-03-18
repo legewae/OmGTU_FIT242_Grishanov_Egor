@@ -1,20 +1,28 @@
 
-class Program{
-    public static int countNestsAlg1(int[,] matrix){
+using System.ComponentModel.DataAnnotations.Schema;
+
+class Program
+{
+    public static int countNestsAlg1(int[,] matrix)
+    {
         int count = 1;
         int[] used = new int[matrix.GetLength(0)];
         used[0] = 1; //1 = использовано
         int[] unused = new int[matrix.GetLength(0)];
         unused[0] = 1; //Указывает по порядку уже использованные пути
-        
+
         int step = 1; //Порядок заполнения unused(как бы замена append)
-        for(int i = 0; i< unused.Length; i++){
-            if(unused[i]==0){ //Достигли конца компонента
+        for (int i = 0; i < unused.Length; i++)
+        {
+            if (unused[i] == 0)
+            { //Достигли конца компонента
                 count++;
                 //Находим первое неиспользованое число
-                for(int k = 0; k < used.Length;k++){
-                    if(used[k]==0){
-                        unused[i] = k+1;
+                for (int k = 0; k < used.Length; k++)
+                {
+                    if (used[k] == 0)
+                    {
+                        unused[i] = k + 1;
                         break;
                     }
                 }
@@ -22,29 +30,74 @@ class Program{
             }
 
             //Берём путь из unused на месте i и находим ему смежные
-            
-            for(int j = 0; j< unused.Length; j++){
-                if(matrix[unused[i]-1, j]==1 && used[j] == 0){
+
+            for (int j = 0; j < unused.Length; j++)
+            {
+                if (matrix[unused[i] - 1, j] == 1 && used[j] == 0)
+                {
                     used[j] = 1;
-                    unused[step] = j+1;
+                    unused[step] = j + 1;
                     step++;
                 }
             }
         }
-    
+
         return count;
     }
 
-    public static void Main(string[] args){
-        int[,] matrix = new int[7,7]{
-            {1,1,1,0,0,0,0},
-            {1,1,1,0,0,0,0},
-            {1,1,1,1,0,0,0},
-            {0,0,1,1,0,1,0},
-            {0,0,0,0,1,0,1},
-            {0,0,0,1,0,1,1},
-            {0,0,0,0,1,1,1}};
-            Console.WriteLine(countNestsAlg1(matrix));
+    public static int countNestsAlg2(int[,] matrix)
+    {
+        int inc = 1;
+        int[] tags = new int[matrix.GetLength(0)];
+        tags[0] = 1;
+        
+        for(int i = 0; i < matrix.GetLength(0); i++)
+        {
+            if (tags[i] == 0)
+            {
+                tags[i] = ++inc;
+            }
+            for (int j = 0; j < matrix.GetLength(0); j++)
+            {
+                if (i == j || matrix[i,j]==0) continue;
 
+                if (tags[j] == 0)
+                {
+                    tags[j] = tags[i];
+                }
+                else
+                {
+                    if (tags[j] < tags[i])
+                    {
+                        tags[i] = tags[j];
+                    }
+                    else if (tags[j] > tags[i])
+                    {
+                        tags[j] = tags[i];
+                    }
+                }
+            }
+        }
+
+        HashSet<int> uniqueTags = new HashSet<int>();
+        foreach (var tag in tags)
+        {
+            uniqueTags.Add(tag);
+        }
+        return uniqueTags.Count;
+    }
+
+    public static void Main(string[] args)
+    {
+        int[,] matrix = new int[7, 7]{
+            {1,1,1,0,0,0,0},
+            {1,1,1,0,0,0,0},
+            {1,1,1,0,0,0,0},
+            {0,0,0,1,0,0,0},
+            {0,0,0,0,1,1,1},
+            {0,0,0,0,1,1,1},
+            {0,0,0,0,1,1,1}};
+        Console.WriteLine(countNestsAlg1(matrix));
+        Console.WriteLine(countNestsAlg2(matrix));
     }
 }
