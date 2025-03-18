@@ -1,0 +1,40 @@
+using System;
+
+namespace ConsoleApplication2
+{
+    class Program
+    {
+        public static void Main(string[] args)
+        {
+            int[,] matrix = { {0,8,10,0,0,0}, //Начальной точкой берется первая
+                              {0,0,0,0,1,0 },
+                              {0,0,0,0,0,2 },
+                              {0,0,1,0,0,0},
+                              {0,0,-4,0,0,-1 },
+                              {0,0,0,-2,0,0 }};
+            double[] weighttable = new double[matrix.GetLength(0)];
+
+            for (int i = 1; i < weighttable.Length; i++)
+            {
+                weighttable[i] = double.PositiveInfinity;
+            }
+
+            for (int l = 0; l < matrix.GetLength(0) - 1; l++)
+            {
+                for (int i = 0; i < matrix.GetLength(0); i++)
+                {
+                    for (int j = 0; j < matrix.GetLength(0); j++)
+                    {
+                        if (matrix[i, j] == 0) continue;
+                        weighttable[j] = Math.Min(weighttable[i] + matrix[i, j], weighttable[j]);
+
+                    }
+                }
+            }
+            for (int j = 0; j < matrix.GetLength(0); j++)
+            {
+                Console.WriteLine(weighttable[j]);
+            }
+        }
+    }
+}
