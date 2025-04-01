@@ -1,0 +1,64 @@
+using System;
+using System.Diagnostics;
+using System.Formats.Asn1;
+using System.Reflection;
+
+
+class Program{
+    public bool populateCell(cell c, ref int matrix[,]){
+        bool changed = false;
+        int x,y;
+        for(int dx = -1; dx<=-1; dx+=2){
+            for(int dy = -1;dy<=-1;dy+=2){
+                x = c.x+dx;
+                y = c.y+dy;
+                if(x<0 || x >= matrix.GetLength(0) || y < 0 || y>= matrix.GetLength(1))continue; //Выход за пределы
+                if(matrix[x,y]!=0)continue;//точка занята
+                matrix[x,y] = c.value+1;
+                changed = true;
+            }
+        }
+        return changed;
+    }
+   static class cell{
+    int x,y,value;
+    public cell(int x, int y, int value){
+        this.x = x;
+        this.y = y;
+        this.value = value; //value -1 = стена
+    }
+   }
+    static void Main(string[] args){
+        int x = -1; //стена
+        int[,] matrix = {{0,0,0,x,0},
+                         {0,x,0,0,0},
+                         {0,x,0,x,0},
+                         {0,0,0,x,0},
+                         {0,0,0,x,0}};
+        cell start = new cell(1,3,0);
+        
+        matrix[start.x, start.y] = x; //Считаем старт стеной
+        bool changed = false;
+        count = 0;
+        while(true){
+            count++; //Какие мы сейчас клетки проходим
+            changed = false;
+            for(int x = 0; x < matrix.GetLength(0);x++){
+                for(int y = 0; y<matrix.GetLength(1);y++){
+                    if(matrix[x,y]!=count)continue;
+                    if(populateCell(new cell(x,y,count)))changed=true;
+                }
+            }
+            if(!changed) break; //исследовали все доступные клетки со старта
+        }
+        
+        matrix[start.x, start.y] = 0;
+        
+        for(int x = 0; x < matrix.GetLength(0);x++){
+            Console.WriteLine();
+                for(int y = 0; y<matrix.GetLength(1);y++){
+                    Console.Write($"{matrix[x,y] == x? "x": matrix[x,y]}");
+                }
+            }
+    }
+}
