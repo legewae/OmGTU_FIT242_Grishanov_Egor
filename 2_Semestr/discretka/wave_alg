@@ -15,19 +15,18 @@ class Program
 
     public static bool PopulateCell(Cell c, ref int[,] matrix)
     {
-        Console.WriteLine("help");
         bool changed = false;
         int x, y;
-        for (int dx = -1; dx <= 1; dx ++)  // Fixed: changed from dx<=-1 to dx<=1
+        for (int dx = -1; dx <= 1; dx ++)
         {
-            for (int dy = -1; dy <= 1; dy ++ )  // Fixed: changed from dy<=-1 to dy<=1
+            for (int dy = -1; dy <= 1; dy ++ )
             {
                 if(dx*dy!=0)continue; //Шаг диагональный
                 x = c.x + dx;
                 y = c.y + dy;
                 
                 if (x < 0 || x >= matrix.GetLength(0) || y < 0 || y >= matrix.GetLength(1)) continue; //Выход за пределы
-                if (matrix[x, y] != 0) continue; //точка занят
+                if (matrix[x, y] != 0) continue; //точка занята
                 
                 matrix[x, y] = c.value + 1;
                 changed = true;
@@ -45,15 +44,14 @@ class Program
                          {0,0,0,x,0},
                          {0,0,0,x,0}};
         Cell start = new Cell(3, 1, 0);
-        
-         //Считаем старт стеной
-        bool changed = false;
+        bool changed = true;
         int count = 0;
+        
         PopulateCell(start, ref matrix);
         matrix[start.x,start.y] = -1;
-        while (true)
+        
+        while (changed)
         {
-            Console.WriteLine(1);
             count++; //Какие мы сейчас клетки проходим
             changed = false;
             for (int i = 0; i < matrix.GetLength(0); i++)
@@ -64,7 +62,6 @@ class Program
                     if (PopulateCell(new Cell(i, j, count), ref matrix)) changed = true;
                 }
             }
-            if (!changed) break; //исследовали все доступные клетки со старта
         }
         
         matrix[start.x, start.y] = 0;
@@ -74,7 +71,7 @@ class Program
             Console.WriteLine();
             for (int j = 0; j < matrix.GetLength(1); j++)
             {
-                Console.Write($"{matrix[i, j]} ");
+                Console.Write($"{matrix[i, j]==-1?"x":matrix[i,j]+""} ");
             }
         }
     }
