@@ -1,0 +1,23 @@
+// Online C# Editor for free
+// Write, Edit and Run your C# code using C# Online Compiler
+
+using System;
+
+public class HelloWorld
+{
+    public delegate int operat(int x, int y); 
+    public static void Main(string[] args)
+    {
+        int a = Convert.ToInt32(Console.ReadLine());
+        int b = Convert.ToInt32(Console.ReadLine());
+        operat sum = (int x, int y) => (x+y);
+        operat sub = (int x, int y) => (x-y);
+        operat mul = (int x, int y) => (x*y);
+        operat div = (int x, int y) => (y==0? 0: x/y);
+        
+        Console.WriteLine(sum(a,b));
+        Console.WriteLine(sub(a,b));
+        Console.WriteLine(mul(a,b));
+        Console.WriteLine(div(a,b));
+    }
+}
