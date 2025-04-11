@@ -1,0 +1,44 @@
+// Online C# Editor for free
+// Write, Edit and Run your C# code using C# Online Compiler
+
+using System;
+
+public class HelloWorld
+{
+    public class massiv<T>{
+        public T[] mas;
+        
+        public massiv(int size){
+            this.mas = new T[size];
+        }
+        
+        public void set(int index, T val){
+            for(int i = 0; i<mas.Length; i++){
+                if(i==index){mas[i]=val; break;}
+            }
+        }
+        public T get(int index){
+            for(int i = 0; i<mas.Length; i++){
+                if(i==index)return mas[i];
+            }
+            return default(T);
+        }
+        public void remove(int index){
+            for(int i = 0; i<mas.Length; i++){
+                if(i==index){mas[i]=default(T); break;}
+            }
+        }
+    } 
+    public static void Main(string[] args)
+    {
+  
+        massiv<string> mas = new massiv<string>(100);
+        Console.WriteLine(mas.get(0));
+        mas.set(0,"algoritmizaciya(((");
+        Console.WriteLine(mas.get(0));
+        mas.remove(0);
+        Console.WriteLine(mas.get(0));
+        mas.set(0,"zamena");
+        Console.WriteLine(mas.get(0));
+    }
+}
