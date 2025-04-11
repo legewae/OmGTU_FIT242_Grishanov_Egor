@@ -1,0 +1,34 @@
+using System;
+using System.Collections.Generic;
+
+public class HelloWorld
+{
+    public delegate bool special(string a); 
+    public delegate string[] filter(string[] a); 
+    
+    public static void Main(string[] args)
+    {
+        int size = Convert.ToInt32(Console.ReadLine());
+        
+        string[] words = new string[size];
+        for(int i = 0; i<size;i++){
+            words[i] = Console.ReadLine();
+        }
+        
+        special startsWith_a = (string a) => a[0] == 'a';
+        
+        filter getAllThatStartWith_a = (string[] words) => {
+            List<string> a_words = new List<string>();
+            for(int i = 0; i<words.Length;i++){
+                if(!startsWith_a(words[i]))continue;
+                a_words.Add(words[i]);
+            }
+            return a_words.ToArray();
+        };
+        
+        string[] a_words = getAllThatStartWith_a(words);
+        for(int i = 0; i< a_words.Length; i++){
+            Console.WriteLine(a_words[i]);
+        }
+    }
+}
