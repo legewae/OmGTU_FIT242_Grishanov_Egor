@@ -1,0 +1,103 @@
+//UNFINISHED
+using System;
+
+public class HelloWorld
+{
+    public static double[,] alg_Littla(double[,] matrix){
+        
+        double low_limit = 0;
+        
+        for(int _ = 0; _<matrix.GetLength(0)-2;_++){
+            printMatrix(matrix);
+            Console.WriteLine();
+             //редукция строк -> столбцов
+            for(int y = 0; y<matrix.GetLength(0);y++){
+                double min = matrix[y,0];
+                for(int x = 0; x<matrix.GetLength(0);x++){
+                    min = Math.Min(min,matrix[y,x]);
+                }
+                if(min==double.PositiveInfinity)continue;
+                low_limit+=min;
+                for(int x = 0; x<matrix.GetLength(0);x++){
+                    matrix[y,x] = matrix[y,x] - min;
+                }
+            }
+            for(int x = 0; x<matrix.GetLength(0);x++){
+                double min = matrix[0,x];
+                for(int y = 0; y<matrix.GetLength(0);y++){
+                    min = Math.Min(min,matrix[y,x]);
+                }
+                if(min==double.PositiveInfinity)continue;
+                low_limit+=min;
+                for(int y = 0; y<matrix.GetLength(0);y++){
+                    matrix[y,x] = matrix[y,x] - min;
+                }
+            }
+            
+            //Находим нуль с наибольшим коэффициентом
+            int dx = 0;
+            int dy = 0;
+            double max = double.NegativeInfinity;
+            
+            for(int y = 0; y<matrix.GetLength(0);y++){
+                for(int x = 0; x<matrix.GetLength(0);x++){
+                    if(matrix[y,x]!=0) continue;
+                    
+                    double minstroka = double.PositiveInfinity;
+                    for(int i = 0; i<matrix.GetLength(0);i++){
+                        if(i==x)continue;
+                        minstroka = Math.Min(minstroka, matrix[y,i]);
+                    }
+                    double minstolb = double.PositiveInfinity;
+                    for(int i = 0; i<matrix.GetLength(0);i++){
+                        if(i==y)continue;
+                        minstolb = Math.Min(minstroka, matrix[i,x]);
+                    }
+                    if(minstroka + minstolb > max){
+                        max = minstroka+minstolb;
+                        dx=x;
+                        dy=y;
+                    }
+                }
+            }
+            //matrix[dx, dy] = double.PositiveInfinity;
+            
+            //Вместо того, чтобы создавать новую матрицу, заменим данную строку dx и столбец dy на бесконечности
+            
+            for(int x = 0; x<matrix.GetLength(0);x++){
+                matrix[dy,x] = double.PositiveInfinity;
+            }
+            for(int y = 0; y<matrix.GetLength(0);y++){
+                matrix[y,dx] = double.PositiveInfinity;
+            }
+        }
+        Console.WriteLine(low_limit);
+        printMatrix(matrix);
+        return matrix;
+    }
+    
+    public static void printMatrix(double[,] matrix){
+        for(int x = 0; x < matrix.GetLength(0); x++){
+            Console.WriteLine();
+            for(int y = 0; y < matrix.GetLength(1);y++){
+                if(matrix[x,y]==double.PositiveInfinity){Console.Write("x ");}else{
+                Console.Write(matrix[x,y] + " ");};
+        }
+    }}
+    public static void Main(string[] args)
+    {
+        double x = double.PositiveInfinity;
+        double[,] matrix = {
+        {x,27,43,16,30,26},
+        {7,x,16,1,30,25},
+        {20,13,x,35,5,0},
+        {21,16,25,x,18,18},
+        {12,46,27,48,x,5},
+        {23,5,5,9,5,x}};
+        double[,] secondMatrix = {{x,20,18,12,8},{5,x,14,7,11},{12,18,x,6,11},{11,17,11,x,12},{
+            5,5,5,5,x
+        }};
+        
+        matrix = alg_Littla(secondMatrix);
+    }
+}
