@@ -101,3 +101,122 @@ public class HelloWorld
         matrix = alg_Littla(secondMatrix);
     }
 }
+
+
+//UNFINISHED
+using System;
+
+public class HelloWorld
+{
+    public static double[,] alg_Littla(double[,] matrix){
+        
+        double low_limit = 0;
+        int len = matrix.GetLength(0);
+        
+        for(int _ = 0; _<len-2;_++){
+            printMatrix(matrix);
+            Console.WriteLine();
+             //редукция строк -> столбцов
+            for(int y = 1; y<matrix.GetLength(0);y++){
+                double min = matrix[y,1];
+                for(int x = 1; x<matrix.GetLength(0);x++){
+                    min = Math.Min(min,matrix[y,x]);
+                }
+                if(min==double.PositiveInfinity)continue;
+                low_limit+=min;
+                for(int x = 1; x<matrix.GetLength(0);x++){
+                    matrix[y,x] = matrix[y,x] - min;
+                }
+            }
+            for(int x = 1; x<matrix.GetLength(0);x++){
+                double min = matrix[1,x];
+                for(int y = 1; y<matrix.GetLength(0);y++){
+                    min = Math.Min(min,matrix[y,x]);
+                }
+                if(min==double.PositiveInfinity)continue;
+                low_limit+=min;
+                for(int y = 1; y<matrix.GetLength(0);y++){
+                    matrix[y,x] = matrix[y,x] - min;
+                }
+            }
+            
+            //Находим нуль с наибольшим коэффициентом
+            int dx = 1;
+            int dy = 1;
+            double max = double.NegativeInfinity;
+            
+            for(int y = 1; y<matrix.GetLength(0);y++){
+                for(int x = 1; x<matrix.GetLength(0);x++){
+                    if(matrix[y,x]!=0) continue;
+                    
+                    double minstroka = double.PositiveInfinity;
+                    for(int i = 1; i<matrix.GetLength(0);i++){
+                        if(i==x)continue;
+                        minstroka = Math.Min(minstroka, matrix[y,i]);
+                    }
+                    double minstolb = double.PositiveInfinity;
+                    for(int i = 1; i<matrix.GetLength(0);i++){
+                        if(i==y)continue;
+                        minstolb = Math.Min(minstolb, matrix[i,x]);
+                    }
+                    if(minstroka + minstolb > max){
+                        max = minstroka+minstolb;
+                        dx=x;
+                        dy=y;
+                    }
+                }
+            }
+
+            for(int x = 1;x<matrix.GetLength(0);x++){ //найдем обратный элемент и заменим на бесконечность
+                for(int y = 1;y<matrix.GetLength(0);y++){
+                   if(matrix[y,0] == matrix[0,dy] && matrix[0, x] == matrix[dx,0]){
+                    matrix[x,y] = double.PositiveInfinity;
+                   }
+                }
+            }
+
+            double[,] newMatrix = new double[matrix.GetLength(0)-1,matrix.GetLength(0)-1];
+            int realx = 0; int realy = 0;
+            for(int y = 0;y<matrix.GetLength(0);y++){
+                if(y==dy)continue;
+                realx = 0;
+                for(int x = 0;x<matrix.GetLength(0);x++){
+                if(x==dx)continue;
+                newMatrix[realy,realx] = matrix[y,x];
+                realx++;
+                }
+                realy++;
+            }
+            matrix = newMatrix;
+
+            
+
+        }
+        Console.WriteLine(low_limit);
+        printMatrix(matrix);
+        return matrix;
+    }
+    
+    public static void printMatrix(double[,] matrix){
+        for(int x = 0; x < matrix.GetLength(0); x++){
+            Console.WriteLine();
+            for(int y = 0; y < matrix.GetLength(1);y++){
+                if(matrix[x,y]==double.PositiveInfinity){Console.Write("x ");}else{
+                Console.Write(matrix[x,y] + " ");};
+        }
+    }}
+    public static void Main(string[] args)
+    {
+        double x = double.PositiveInfinity;
+        double[,] matrix = {
+        {0,1,2,3,4,5,6},
+        {1,x,27,43,16,30,26},
+        {2,7,x,16,1,30,25},
+        {3,20,13,x,35,5,0},
+        {4,21,16,25,x,18,18},
+        {5,12,46,27,48,x,5},
+        {6,23,5,5,9,5,x}};
+        
+        matrix = alg_Littla(matrix);
+    }
+}
