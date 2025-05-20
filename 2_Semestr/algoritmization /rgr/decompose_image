@@ -1,0 +1,146 @@
+using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+
+
+namespace ConsoleApp6
+{
+    internal class Program
+    {
+        public class ZRect
+        {
+            public int x, y, w, h;
+            public ZRect(int x, int y, int w, int h)
+            {
+                this.x = x;
+                this.y = y;
+                this.w = w;
+                this.h = h;
+            }
+
+        }
+        public static int[,] Decode(string[] inp)
+        {
+            int w = Convert.ToInt32(inp[0].Split()[0]);
+            int h = Convert.ToInt32(inp[0].Split()[1]);
+
+            int[,] output = new int[h, w];
+
+            if (inp[1] != "Z")
+            {
+                int color = Convert.ToInt32(inp[1]);
+                for (int x = 0; x < w; x++)
+                {
+                    for (int y = 0; y < h; y++)
+                    {
+                        output[y, x] = color;
+                    }
+                }
+                return output;
+            }
+
+            Queue<ZRect> queue = new Queue<ZRect>();
+            int curLine = 2;
+            queue.Enqueue(new ZRect(0, 0, w, h));
+            while (queue.Count > 0)
+            {
+
+                ZRect rectangle = queue.Dequeue();
+                string[] line = inp[curLine].Split();
+
+                for (int i = 0; i < 4; i++)
+                {
+                    if (line[i] == "-") continue;
+                    int newx = rectangle.x;
+                    int newy = rectangle.y;
+                    int neww = rectangle.w;
+                    int newh = rectangle.h;
+                    if (i == 0)
+                    {
+                        neww = (neww + 1) / 2;
+                        newh = (newh + 1) / 2;
+                    }
+                    else if (i == 1)
+                    {
+                        newx += (neww + 1) / 2;
+                        neww = neww / 2;
+                        newh = (newh + 1) / 2;
+                    }
+                    else if (i == 2)
+                    {
+                        newy += (newh + 1) / 2;
+                        newh = newh / 2;
+                        neww = (neww + 1) / 2;
+                    }
+                    else
+                    {
+                        newx += (neww + 1) / 2;
+                        newy += (newh + 1) / 2;
+                        newh = newh / 2;
+                        neww = neww / 2;
+                    }
+                    if (line[i] == "Z")
+                    {
+                        queue.Enqueue(new ZRect(newx, newy, neww, newh));
+                    }
+                    else
+                    {
+
+                        int color = Convert.ToInt32(line[i]);
+                        for (int x = newx; x < newx + neww; x++)
+                        {
+                            for (int y = newy; y < newy + newh; y++)
+                            {
+                                output[y,x] = color;
+                            }
+                        }
+                    }
+
+                }
+                curLine++;
+            }
+            return output;
+        }
+        static void Main()
+        {
+            for (int i = 1; i < 20; i++) //Проведение тестов
+            {
+                try
+                {
+                    string idx = i.ToString();
+                    if (i < 10) idx = "0" + idx;
+                    string[] inp = File.ReadAllLines("input_s1_" + idx + ".txt");
+
+                    int[,] output = Decode(inp);
+
+                    string[] correctRes = File.ReadAllLines("output_s1_" + idx + ".txt");
+
+                    bool isEqual = true;
+                    for (int y = 0; y < output.GetLength(0); y++)
+                    {
+
+                        for (int x = 0; x < output.GetLength(1); x++)
+                        {
+
+                            if (output[y, x] != Convert.ToInt32(correctRes[y].Split()[x]))
+                            {
+                                isEqual = false;
+                                break;
+                            }
+                        }
+                        if (!isEqual) break;
+                    }
+                    Console.WriteLine($"Тест {i} пройден: {(isEqual ? "да" : "нет")}");
+                }
+
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Тест {i} не пройден: {ex.Message}, ошибка в файле output!");
+                }
+            }
+
+        }
+    }
+}
+        
