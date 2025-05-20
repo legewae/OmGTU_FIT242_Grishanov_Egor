@@ -1,0 +1,145 @@
+using System;
+using System.Collections.Generic; 
+
+namespace ConsoleApp7
+{
+    internal class Program
+    {
+        public class ZRect
+        {
+            public int x, y, w, h;
+            public ZRect(int x, int y, int w, int h)
+            {
+                this.x = x;
+                this.y = y;
+                this.w = w;
+                this.h = h;
+            }
+
+        }
+        public static bool isOneColor(string[] input, int x, int y, int w, int h)
+        {
+
+            string color = input[y].Split()[x];
+            for (int i = y; i < y + h; i++)
+            {
+                string[] line = input[i].Split();
+                for (int j = x; j < x + w; j++)
+                {
+                    if (line[j] != color)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        public static string[] Encode(string[] input)
+        {
+            Queue<ZRect> queue = new Queue<ZRect>();
+            queue.Enqueue(new ZRect(0, 1, Convert.ToInt32(input[0].Split()[0]), Convert.ToInt32(input[0].Split()[1])));
+            List<string> result = new List<string>();
+            result.Add(input[0]);
+
+            if (isOneColor(input, 0, 1, Convert.ToInt32(input[0].Split()[0]), Convert.ToInt32(input[0].Split()[1])))
+            {
+                result.Add(input[1].Split()[0]);
+            }
+            else
+            {
+                result.Add("Z");
+                while (queue.Count > 0)
+                {
+                    string Line = "";
+                    ZRect rect = queue.Dequeue();
+                    for (int i = 0; i < 4; i++)
+                    {
+                        int x, y, w, h;
+
+                        if (i == 0)
+                        {
+                            x = rect.x;
+                            y = rect.y;
+                            w = (rect.w + 1) / 2;
+                            h = (rect.h + 1) / 2;
+                        }
+                        else if (i == 1)
+                        {
+                            x = rect.x + (rect.w + 1)/2;
+                            y = rect.y;
+                            w = rect.w / 2;
+                            h = (rect.h + 1) / 2;
+                        }
+                        else if (i == 2)
+                        {
+                            x = rect.x;
+                            y = rect.y + (rect.h + 1) / 2;
+                            w = (rect.w + 1) / 2;
+                            h = rect.h / 2;
+                        }
+                        else
+                        {
+                            x = rect.x + (rect.w + 1) / 2;
+                            y = rect.y + (rect.h + 1) / 2;
+                            w = rect.w / 2;
+                            h = rect.h / 2;
+
+                        }
+                        if (w == 0 || h == 0)
+                        {
+                            Line += "-" + (i != 3 ? " " : "");
+                            continue;
+                        }
+
+                        if (isOneColor(input, x, y, w, h))
+                        {
+                            Line += input[y].Split()[x] + (i != 3 ? " " : "");
+                        }
+                        else
+                        {
+                            Line += "Z" + (i != 3 ? " " : "");
+                            queue.Enqueue(new ZRect(x, y, w, h));
+                        }
+                    }
+                    result.Add(Line);
+
+                }
+            }
+                return result.ToArray();
+            
+        }
+        static void Main(string[] args)
+        {
+            for (int i = 1; i <20; i++) //Проведение тестов
+            {
+                try
+                {
+                    
+                    string idx = i.ToString();
+                    if (i < 10) idx = "0" + idx;
+                    string[] inp = File.ReadAllLines("input_s1_" + idx + ".txt");
+
+                    string[] output = Encode(inp);
+
+                    string[] correctRes = File.ReadAllLines("output_s1_" + idx + ".txt");
+
+                    bool isEqual = true;
+                    for (int y = 0; y < output.GetLength(0); y++)
+                    {
+
+                        if (output[y] != correctRes[y]) { isEqual = false;}
+                    }
+                    Console.WriteLine($"Тест {i} пройден: {(isEqual ? "да" : "нет")}");
+                }
+
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Тест {i} не пройден: {ex.Message}, ошибка в файле output!");
+                }
+            }
+
+        }
+
+ 
+    }
+}
