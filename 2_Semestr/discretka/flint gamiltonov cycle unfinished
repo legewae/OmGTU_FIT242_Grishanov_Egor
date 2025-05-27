@@ -1,121 +1,17 @@
 //UNFINISHED
 using System;
+using System.Collections.Generic;
 
 public class HelloWorld
 {
-    public static double[,] alg_Littla(double[,] matrix){
-        
-        double low_limit = 0;
-        
-        for(int _ = 0; _<matrix.GetLength(0)-2;_++){
-            printMatrix(matrix);
-            Console.WriteLine();
-             //редукция строк -> столбцов
-            for(int y = 0; y<matrix.GetLength(0);y++){
-                double min = matrix[y,0];
-                for(int x = 0; x<matrix.GetLength(0);x++){
-                    min = Math.Min(min,matrix[y,x]);
-                }
-                if(min==double.PositiveInfinity)continue;
-                low_limit+=min;
-                for(int x = 0; x<matrix.GetLength(0);x++){
-                    matrix[y,x] = matrix[y,x] - min;
-                }
-            }
-            for(int x = 0; x<matrix.GetLength(0);x++){
-                double min = matrix[0,x];
-                for(int y = 0; y<matrix.GetLength(0);y++){
-                    min = Math.Min(min,matrix[y,x]);
-                }
-                if(min==double.PositiveInfinity)continue;
-                low_limit+=min;
-                for(int y = 0; y<matrix.GetLength(0);y++){
-                    matrix[y,x] = matrix[y,x] - min;
-                }
-            }
-            
-            //Находим нуль с наибольшим коэффициентом
-            int dx = 0;
-            int dy = 0;
-            double max = double.NegativeInfinity;
-            
-            for(int y = 0; y<matrix.GetLength(0);y++){
-                for(int x = 0; x<matrix.GetLength(0);x++){
-                    if(matrix[y,x]!=0) continue;
-                    
-                    double minstroka = double.PositiveInfinity;
-                    for(int i = 0; i<matrix.GetLength(0);i++){
-                        if(i==x)continue;
-                        minstroka = Math.Min(minstroka, matrix[y,i]);
-                    }
-                    double minstolb = double.PositiveInfinity;
-                    for(int i = 0; i<matrix.GetLength(0);i++){
-                        if(i==y)continue;
-                        minstolb = Math.Min(minstolb, matrix[i,x]);
-                    }
-                    if(minstroka + minstolb > max){
-                        max = minstroka+minstolb;
-                        dx=x;
-                        dy=y;
-                    }
-                }
-            }
-            //matrix[dx, dy] = double.PositiveInfinity;
-            
-            //Вместо того, чтобы создавать новую матрицу, заменим данную строку dx и столбец dy на бесконечности
-            
-            for(int x = 0; x<matrix.GetLength(0);x++){
-                matrix[dy,x] = double.PositiveInfinity;
-            }
-            for(int y = 0; y<matrix.GetLength(0);y++){
-                matrix[y,dx] = double.PositiveInfinity;
-            }
-        }
-        Console.WriteLine(low_limit);
-        printMatrix(matrix);
-        return matrix;
-    }
-    
-    public static void printMatrix(double[,] matrix){
-        for(int x = 0; x < matrix.GetLength(0); x++){
-            Console.WriteLine();
-            for(int y = 0; y < matrix.GetLength(1);y++){
-                if(matrix[x,y]==double.PositiveInfinity){Console.Write("x ");}else{
-                Console.Write(matrix[x,y] + " ");};
-        }
-    }}
-    public static void Main(string[] args)
-    {
-        double x = double.PositiveInfinity;
-        double[,] matrix = {
-        {x,27,43,16,30,26},
-        {7,x,16,1,30,25},
-        {20,13,x,35,5,0},
-        {21,16,25,x,18,18},
-        {12,46,27,48,x,5},
-        {23,5,5,9,5,x}};
-        double[,] secondMatrix = {{x,20,18,12,8},{5,x,14,7,11},{12,18,x,6,11},{11,17,11,x,12},{
-            5,5,5,5,x
-        }};
-        
-        matrix = alg_Littla(secondMatrix);
-    }
-}
-
-
-//UNFINISHED
-using System;
-
-public class HelloWorld
-{
-    public static double[,] alg_Littla(double[,] matrix){
+    public static List<(double start,double end)> alg_Littla(double[,] matrix){
         
         double low_limit = 0;
         int len = matrix.GetLength(0);
         
-        for(int _ = 0; _<len-2;_++){
-            printMatrix(matrix);
-            Console.WriteLine();
+        List<(double start, double end)> points = new List<(double,double)>();
+
+        for(int _ = 0; _<len-3;_++){
              //редукция строк -> столбцов
             for(int y = 1; y<matrix.GetLength(0);y++){
                 double min = matrix[y,1];
@@ -167,11 +63,44 @@ public class HelloWorld
                 }
             }
 
-            for(int x = 1;x<matrix.GetLength(0);x++){ //найдем обратный элемент и заменим на бесконечность
-                for(int y = 1;y<matrix.GetLength(0);y++){
-                   if(matrix[y,0] == matrix[0,dy] && matrix[0, x] == matrix[dx,0]){
-                    matrix[x,y] = double.PositiveInfinity;
-                   }
+            points.Add((matrix[dy,0], matrix[0,dx])); //Добавляем наше ребро
+
+            //Теперь нужно заменить ребро, которое может привести к циклу, бесконечностью
+            
+            //От нашего точки dx идем в обратную сторону, чтобы найти начало
+            //От нашей точки dy идем дальше, чтобы найти конец
+
+            //Найдем конец
+            double end = matrix[0,dx];
+            while(true){
+                bool found = false;
+                foreach(var point in points){
+                    if(end == point.start){
+                        end = point.end;
+                        found = true;
+                        break;
+                    }
+                }
+                if(!found)break;
+            }
+            //Найдем начало
+            double start = matrix[dy,0];
+            while(true){
+                bool found = false;
+                foreach(var point in points){
+                    if(start == point.end){
+                        start = point.start;
+                        found = true;
+                        break;
+                    }
+                }
+                if(!found)break;
+            }
+            //Нашли города, соединение которых приведет к циклу - (end,start)
+
+            for(int x = 1; x<matrix.GetLength(0); x++){
+                for(int y = 1; y<matrix.GetLength(1); y++){
+                    if(matrix[y,0] == end && matrix[0,x] == start){ matrix[y,x] = double.PositiveInfinity; break;};
                 }
             }
 
@@ -192,9 +121,10 @@ public class HelloWorld
             
 
         }
+        points.Add((matrix[1,0],matrix[0,2]));
+        points.Add((matrix[2,0],matrix[0,1]));
         Console.WriteLine(low_limit);
-        printMatrix(matrix);
-        return matrix;
+        return points;
     }
     
     public static void printMatrix(double[,] matrix){
@@ -209,7 +139,7 @@ public class HelloWorld
     {
         double x = double.PositiveInfinity;
         double[,] matrix = {
-        {0,1,2,3,4,5,6},
+        {x,1,2,3,4,5,6},
         {1,x,27,43,16,30,26},
         {2,7,x,16,1,30,25},
         {3,20,13,x,35,5,0},
@@ -217,6 +147,20 @@ public class HelloWorld
         {5,12,46,27,48,x,5},
         {6,23,5,5,9,5,x}};
         
-        matrix = alg_Littla(matrix);
-    }
-}
+        var list = alg_Littla(matrix);
+        double start, end;
+        start = list[0].start;
+        end = list[0].end;
+        Console.Write($"{start}-{end}");
+        for(int i = 0; i< list.Count-1;i++){
+            for(int b = 0; b< list.Count;b++)
+                if(list[b].start == end){
+                    start = list[b].start;
+                    end = list[b].end;
+                    Console.Write($"-{end}");
+                    break;
+                }
+                }
+            }
+        };
+    
