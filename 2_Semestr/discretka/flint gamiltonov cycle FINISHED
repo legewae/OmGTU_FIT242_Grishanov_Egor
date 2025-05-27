@@ -123,6 +123,7 @@ public class HelloWorld
         }
         points.Add((matrix[1,0],matrix[0,2]));
         points.Add((matrix[2,0],matrix[0,1]));
+        low_limit+=matrix[1,2] + matrix[2,1];
         Console.WriteLine(low_limit);
         return points;
     }
@@ -140,12 +141,12 @@ public class HelloWorld
         double x = double.PositiveInfinity;
         double[,] matrix = {
         {x,1,2,3,4,5,6},
-        {1,x,27,43,16,30,26},
-        {2,7,x,16,1,30,25},
-        {3,20,13,x,35,5,0},
-        {4,21,16,25,x,18,18},
-        {5,12,46,27,48,x,5},
-        {6,23,5,5,9,5,x}};
+        {1,x,41,40,48,40,42},
+        {2,48,x,41,49,42,46},
+        {3,22,22,x,23,24,19},
+        {4,15,17,11,x,10,14},
+        {5,47,43,18,42,x,52},
+        {6,34,39,30,39,32,x}};
         
         var list = alg_Littla(matrix);
         double start, end;
