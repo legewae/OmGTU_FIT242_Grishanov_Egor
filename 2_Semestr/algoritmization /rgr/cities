@@ -1,0 +1,94 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+
+public class HelloWorld
+{
+   
+    public static double FindMax(double[,] matrix)
+    {
+        int n = matrix.GetLength(0);
+
+        // Алгоритм Флойда-Уоршелла
+        for (int k = 0; k < n; k++)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    matrix[i, j] = Math.Min(matrix[i, j], matrix[i, k] + matrix[k, j]);
+                }
+            }
+        }
+
+        double maxDistance = 0; 
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if (matrix[i, j] != double.PositiveInfinity)
+                {
+                    maxDistance = Math.Max(maxDistance, matrix[i, j]);
+                }
+            }
+        }
+      
+        return maxDistance;
+    }
+
+    public static void Main()
+    {
+      
+        for (int i = 1; i < 14; i++)
+        {
+            try
+            {
+                string idx = i.ToString();
+                if (i < 10) idx = "0" + idx;
+                string[] inp = File.ReadAllLines("input_s1_" + idx + ".txt");
+
+                int n = Convert.ToInt32(inp[0].Split()[0]);
+                double[,] matrix = new double[n, n];
+
+                for (int x = 0; x < n; x++)
+                {
+                    for (int y = 0; y < n; y++)
+                    {
+                        if (x == y)
+                        {
+                            matrix[x, y] = 0;
+                        }
+                        else
+                        {
+                            matrix[x, y] = double.PositiveInfinity;
+                        }
+                    }
+                }
+
+               
+                for (int x = 1; x < inp.Length; x++)
+                {
+                    string[] s = inp[x].Split();
+                    int start = Convert.ToInt32(s[0]) - 1;
+                    int end = Convert.ToInt32(s[1]) - 1;   
+                    double length = Convert.ToDouble(s[2]);
+
+                    //Если в файле указаны веса одной дороги, то берем минимальную
+                    matrix[start, end] = Math.Min(matrix[start, end], length);
+                    matrix[end, start] = Math.Min(matrix[end, start], length);
+                }
+
+                double maxDouble = FindMax(matrix);
+                int max = (int)maxDouble;
+
+                string[] correctRes = File.ReadAllLines("output_s1_" + idx + ".txt");
+
+                Console.WriteLine($"Тест {i} пройден: {("" + max == correctRes[0] ? "да" : "нет")}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Тест {i} не пройден: {ex.Message}");
+            }
+        }
+    }
+}
