@@ -1,0 +1,108 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.IO;
+    
+
+public class Program
+{
+    public class Point
+    {
+        public long x;
+        public long y;
+
+        public Point(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    public static List<Point> GetConvex(List<Point> points) //Найдем выпуклый многоугольник по алгоритму Грэхема
+    {
+        if (points.Count < 3)
+            return points;
+
+        //Находим крайнюю левую нижнюю точку
+        Point pivot = points.OrderBy(p => p.y).ThenBy(p => p.x).First();
+
+        //По углу от найденной точки против часовой стрелки сортируем точки
+        var sorted = points
+            .Where(p => p != pivot)
+            .OrderBy(p => Math.Atan2(p.y - pivot.y, p.x - pivot.x))
+            .ThenBy(p => Distance(pivot, p))
+            .ToList();
+
+        //Набор точек
+        Stack<Point> stack = new Stack<Point>();
+        stack.Push(pivot);
+        stack.Push(sorted[0]); //Первые две точки точно входят
+
+        for (int i = 1; i < sorted.Count; i++)
+        {
+            Point top = stack.Pop();
+            while (stack.Count > 0 && CrossProduct(stack.Peek(), top, sorted[i]) <= 0) //проверка на выпуклось, убираем лишние точки
+            {
+                top = stack.Pop();
+            }
+            stack.Push(top);
+            stack.Push(sorted[i]);
+        }
+
+        return stack.ToList();
+    }
+
+    private static double Distance(Point a, Point b)
+    {
+        return Math.Sqrt(Math.Pow(b.x - a.x, 2) + Math.Pow(b.x - a.x, 2));
+    }
+
+    private static long CrossProduct(Point a, Point b, Point c)
+    {
+        return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
+    }
+
+    public static double CalculateArea(List<Point> polygon) //По формуле площади Гаусса
+    {
+        double area = 0;
+        int n = polygon.Count;
+
+        for (int i = 0; i < n; i++)
+        {
+            Point current = polygon[i];
+            Point next = polygon[(i + 1) % n];
+            area += (current.x * next.y) - (next.x * current.y);
+        }
+
+        return Math.Abs(area) / 2;
+    }
+    public static void Main()
+    {
+        for (int i = 1; i < 12; i++)
+        {
+            try
+            {
+                string idx = i.ToString();
+                if (i < 10) idx = "0" + idx;
+                string[] inp = File.ReadAllLines("input_s1_" + idx + ".txt");
+
+                int n = Convert.ToInt32(inp[0]);
+
+                List<Point> points = new List<Point>();
+                for (int x = 1; x <= n; x++)
+                {
+                    string[] st = inp[x].Split();
+                    points.Add(new Point(Convert.ToInt32(st[0]), Convert.ToInt32(st[1])));
+                }
+
+                double area = CalculateArea(GetConvex(points));
+                string[] correctRes = File.ReadAllLines("output_s1_" + idx + ".txt");
+                Console.WriteLine($"Тест {i} пройден: {("" + area.ToString("F3").Replace(',','.') == correctRes[0] ? "да" : "нет")}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Тест {i} не пройден: {ex.Message}");
+            }
+        }
+    }
+}
