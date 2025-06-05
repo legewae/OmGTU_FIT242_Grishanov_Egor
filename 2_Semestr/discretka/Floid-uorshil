@@ -12,7 +12,7 @@ namespace ConsoleApplication2
             {
                     for (int j = 0; j < matrix.GetLength(1); j++)
             {
-                matrix[i, k] = Math.Min(matrix[i, k], matrix[i, j] + matrix[j, k]);
+                matrix[i, j] = Math.Min(matrix[i, j], matrix[i, k] + matrix[j, k]);
             }
             }
             }
