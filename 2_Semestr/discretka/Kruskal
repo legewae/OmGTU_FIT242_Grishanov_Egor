@@ -1,6 +1,5 @@
-//Граф взял из https://ru.wikipedia.org/wiki/Алгоритм_Краскала пример снизу
-
 using System;
+using System.Collections.Generic;
 
 namespace ConsoleApp4
 {
@@ -8,69 +7,55 @@ namespace ConsoleApp4
     {
         static void Main(string[] args)
         {
-            string[] rebra = {"ab","bc","ce","eb","bd","de","ef","df","fg","ge","ad"};
-            int[] weights = {7,8,5,7,9,15,8,6,11,9,5};
+            string[] rebra = { "ab", "bc", "ce", "eb", "bd", "de", "ef", "df", "fg", "ge", "ad" };
+            int[] weights = { 7, 8, 5, 7, 9, 15, 8, 6, 11, 9, 5 };
+            
+            // Сортируем рёбра по весу
             Array.Sort(weights, rebra);
 
-            string used  = rebra[0];
-            string node = "00";
-            string res = used + " ";
-
-            int sum = weights[0];
-            int kompN;
-            for (int i = 1; i < weights.Length; i++)
+            Dictionary<char, char> parent = new Dictionary<char, char>();
+            
+            //Каждая вершина - свой родитель
+            foreach (var edge in rebra)
             {
-                kompN = i;
-                Console.WriteLine(rebra[i]);
-                Console.WriteLine(node);
+                if (!parent.ContainsKey(edge[0])) parent[edge[0]] = edge[0];
+                if (!parent.ContainsKey(edge[1])) parent[edge[1]] = edge[1];
+            }
+
+            int sum = 0;
+            List<string> resultEdges = new List<string>();
+
+            for (int i = 0; i < weights.Length; i++)
+            {
+                char u = rebra[i][0];
+                char v = rebra[i][1];
                 
-                if (used.Contains(rebra[i][0]) && used.Contains(rebra[i][1]))
-                {//Проверяем если они в одном компоненте связности
-                    if (node[used.IndexOf(rebra[i][0])] == node[used.IndexOf(rebra[i][1])]) continue;
-                    else //Иначе тогда соединяются компоненты связности
-                    {
-                        string newstr = "";
-                        for (int j = 0; j < node.Length; j++)
-                        {
-                            if (node[j] == node[used.IndexOf(rebra[i][1])])
-                            {
-                                newstr += node[used.IndexOf(rebra[i][0])];
-                            }
-                            else newstr += node[j];
-                        }
-                        node = newstr;
-                    }
-                    
-                }
-
-                //Если один из них уже использован, добавляем оба в компонент связности этой вершины
-                if (used.Contains(rebra[i][0]))
+                //Находим родителя(компонент связности) обойх вершин
+                char rootU = Find(u, parent);
+                char rootV = Find(v, parent);
+                
+                // Если разные, то добавляем в один компонент
+                if (rootU != rootV)
                 {
-                    kompN = Convert.ToInt32(node[used.IndexOf(rebra[i][0])] + "");
+                    resultEdges.Add(rebra[i]);
+                    sum += weights[i];
+                    // Объединяем множества
+                    parent[rootV] = rootU;
                 }
-                if (used.Contains(rebra[i][1]))
-                {
-                    kompN = Convert.ToInt32(node[used.IndexOf(rebra[i][1])]+ "");
-                }
-
-
-                if (!used.Contains(rebra[i][0]))
-                {
-                    used += rebra[i][0];
-                    node += kompN;
-                }
-                if (!used.Contains(rebra[i][1]))
-                {
-                    used += rebra[i][1];
-                    node += kompN;
-                }
-
-                sum += weights[i];
-                res += rebra[i] + " ";
             }
 
             Console.WriteLine($"Минимальная длина дерева: {sum}");
-            Console.WriteLine($"Ребра такого дерева: {res}");
+            Console.WriteLine($"Рёбра такого дерева: {string.Join(" ", resultEdges)}");
+        }
+        
+        //функция для нахождения родителя
+        static char Find(char vertex, Dictionary<char, char> parent)
+        {
+            if (parent[vertex] != vertex)
+            {
+                parent[vertex] = Find(parent[vertex], parent);
+            }
+            return parent[vertex];
         }
     }
 }
