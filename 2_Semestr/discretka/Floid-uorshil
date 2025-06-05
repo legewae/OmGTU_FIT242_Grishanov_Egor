@@ -6,11 +6,11 @@ namespace ConsoleApplication2
     {
         public static double[,] computator(double[,] matrix)
         {
-            for (int i = 0; i < matrix.GetLength(1); i++)
+            for (int k = 0; k < matrix.GetLength(1); k++)
             {
-                for (int j = 0; j < matrix.GetLength(1); j++)
+                for (int i = 0; i < matrix.GetLength(1); i++)
             {
-                    for (int k = 0; k < matrix.GetLength(1); k++)
+                    for (int j = 0; j < matrix.GetLength(1); j++)
             {
                 matrix[i, k] = Math.Min(matrix[i, k], matrix[i, j] + matrix[j, k]);
             }
