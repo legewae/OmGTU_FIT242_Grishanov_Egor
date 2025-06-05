@@ -1,0 +1,47 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
+class Program
+{
+    static void Main()
+    {
+        string input = Console.ReadLine();
+        
+        string[] literals = input.Split();
+        
+        Stack<int> st = new Stack<int>();
+        
+        for(int i = 0; i<literals.Length; i++){
+            int num;
+            
+            bool isNum = int.TryParse(literals[i], out num);
+            
+            if(isNum){
+                st.Push(num);
+                continue;
+            } else {
+                string op = literals[i];
+                int a = st.Pop();
+                int b = st.Pop();
+                
+                switch(op){
+                case "+":
+                    st.Push(a+b);
+                    break;
+                case "-":
+                    st.Push(a-b);
+                    break;  
+                case "*":
+                    st.Push(a*b);
+                    break;
+                case "/":
+                    if(b == 0){Console.WriteLine("Деление на нуль!"); return;};
+                    st.Push(a/b);
+                    break;
+                }
+            }
+        }
+        Console.WriteLine(st.Pop());
+    }
+}
