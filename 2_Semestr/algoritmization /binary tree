@@ -1,0 +1,82 @@
+using System;
+
+unsafe struct item
+{
+    public int id;
+    public string name;
+    public item* left;
+    public item* right;
+
+    public item(int id, string name)
+    {
+        this.id = id;
+        this.name = name;
+        this.left = null;
+        this.right = null;
+    }
+}
+
+unsafe class Program
+{
+    unsafe static void Main()
+    {
+        item obj1 = new item(3, "Minecraft");
+        item* root = &obj1;
+
+        item obj2 = new item(1, "STEVE");
+        item obj3 = new item(2, "Flint");
+        item obj4 = new item(4, "and");
+        item obj5 = new item(5, "STEEL");
+
+        SelectBranch(root, &obj2);
+        SelectBranch(root, &obj3);
+        SelectBranch(root, &obj4);
+        SelectBranch(root, &obj5);
+
+        PrintTree(root);
+    }
+
+    public static void SelectBranch(item* item1, item* item2)
+    {
+        if (item2->id < item1->id)
+        {
+            if (item1->left == null)
+            {
+                item1->left = item2;
+            }
+            else
+            {
+                SelectBranch(item1->left, item2);
+            }
+        }
+        else
+        {
+            if (item1->right == null)
+            {
+                item1->right = item2;
+            }
+            else
+            {
+                SelectBranch(item1->right, item2);
+            }
+        }
+    }
+
+    public static void PrintTree(item* item, string branch = "Мангровый корень")
+    {
+        if (item != null)
+        {
+            if (item->left != null)
+            {
+                PrintTree(item->left, "Левая");
+            }
+
+            Console.WriteLine($"id: {item->id}, имя: {item->name}, ветка: {branch}");
+
+            if (item->right != null)
+            {
+                PrintTree(item->right, "Правая");
+            }
+        }
+    }
+}
