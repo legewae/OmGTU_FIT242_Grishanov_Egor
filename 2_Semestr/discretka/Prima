@@ -25,13 +25,7 @@ namespace ConsoleApp4
                 for(int i = 0; i<rebra.Length;i++)
                 {
                     string edge = rebra[i];
-                    if (used.Contains(edge[0]) && !used.Contains(edge[1]) && weights[i] < minWeight)
-                    {
-                        minWeight = weights[i];
-                        shortestPath = edge;
-                        selected = i;
-                    }
-                    else if (used.Contains(edge[1]) && !used.Contains(edge[0]) && weights[i] < minWeight)
+                    if ((used.Contains(edge[0]) && !used.Contains(edge[1])||((used.Contains(edge[1]) && !used.Contains(edge[0]))) && weights[i] < minWeight)
                     {
                         minWeight = weights[i];
                         shortestPath = edge;
